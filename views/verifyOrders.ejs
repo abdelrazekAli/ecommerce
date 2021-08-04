@@ -1,0 +1,42 @@
+<%- include("parts/header") %>
+    <%- include("parts/navbar") %>
+        <br>
+        <div class="container text-center">
+            <form action="/cart/orders" method="post">
+                <% for(let i=0 ; i < products.length ; i++) {%>
+                    <input type="hidden" name="productName" value="<%= products[i].name %>">
+                    <input type="hidden" name="productPrice" value="<%= products[i].price%>">
+                    <input type="hidden" name="productAmount" value="<%= products[i].amount%>">
+                    <input type="hidden" name="userId" value="<%= products[i].userId %>">
+                    <input type="hidden" name="productId" value="<%= products[i].productId %>">
+                    <input type="hidden" name="cartId" value="<%= products[i]._id %>">
+                    <input type="hidden" name="timestamp" value="<%= products[i].timestamp %>">
+                    <% } %>
+                        <input type="text" name="address" class="form-control my-2 w-50 " placeholder="Address"
+                            required>
+                        <% let error=validationResult.find(err=> err.param === "address") %>
+                            <% if(error) {%>
+                                <div class="alert alert-danger w-50 d-inline-block">
+                                    <%= error.msg %>
+                                </div>
+                                <% } %>
+                                    <div class="align-items-center w-50  d-inline-block">
+                                        <div class="input-group mb-2">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">+20</div>
+                                            </div>
+                                            <input type="text" name="phone" class="form-control"
+                                                placeholder="Phone number" required>
+                                        </div>
+                                    </div>
+                                    <% error=validationResult.find(err=> err.param === "phone") %>
+                                        <% if(error) {%>
+                                            <div class="alert alert-danger w-50 d-inline-block">
+                                                <%= error.msg %>
+                                            </div>
+                                            <% } %>
+                                                <input type="submit" value="Confirm Order"
+                                                    class=" btn btn-success form-control w-50">
+            </form>
+        </div>
+        <%- include("parts/footer") %>

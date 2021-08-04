@@ -1,0 +1,61 @@
+<%- include("parts/header") %>
+    <%- include("parts/navbar") %>
+        <div class="container text-center">
+            <h3 class="my-4">Create Account</h3>
+            <form action="/signup" method="POST" class="needs-validation" novalidate>
+                <input type="text" name="username" class="form-control my-2 w-50 d-inline-block" placeholder="Username"
+                    autofocus required>
+                <div class="invalid-feedback">
+                    Enter your name
+                </div>
+                <% let error=validationErrors.find(err=> err.param === "username") %>
+                    <% if(error) {%>
+                        <div class="alert alert-danger w-50 d-inline-block">
+                            <%= error.msg %>
+                        </div>
+                        <% } %>
+                            <input type="email" name="email" class="form-control my-2  w-50" placeholder="Email"
+                                required>
+                            <div class="invalid-feedback">
+                                Enter a valid email
+                            </div>
+                            <% error=validationErrors.find(err=> err.param === "email") %>
+                                <% if(error) {%>
+                                    <div class="alert alert-danger w-50 d-inline-block">
+                                        <%= error.msg %>
+                                    </div>
+                                    <% } %>
+                                        <input type="password" name="password" class="form-control my-2 w-50"
+                                            placeholder="Password" minlength="6" required>
+                                        <div class="invalid-feedback">
+                                            Password must be more than 6 characters
+                                        </div>
+                                        <% error=validationErrors.find(err=> err.param === "password") %>
+                                            <% if(error) {%>
+                                                <div class="alert alert-danger w-50 d-inline-block">
+                                                    <%= error.msg %>
+                                                </div>
+                                                <% } %>
+                                                    <input type="password" name="confirmPassword"
+                                                        class="form-control my-2 w-50" placeholder="Confirm Password"
+                                                        minlength="6" required>
+                                                    <% error=validationErrors.find(err=> err.param ===
+                                                        "confirmPassword") %>
+                                                        <% if(error) {%>
+                                                            <div class="alert alert-danger w-50 d-inline-block">
+                                                                <%= error.msg %>
+                                                            </div>
+                                                            <% } %>
+                                                                <input type="submit" value="Create Account"
+                                                                    class="btn btn-primary my-2  w-50">
+            </form>
+            <% if(signupError) {%>
+                <div class="alert alert-danger w-50 d-inline-block">
+                    <%= signupError %>
+                </div>
+                <% } %>
+                    <div class="my-2">
+                        Already have account ? <a href="/login">Login</a>
+                    </div>
+        </div>
+        <%- include("parts/footer") %>

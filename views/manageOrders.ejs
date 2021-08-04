@@ -1,0 +1,118 @@
+<%- include("parts/header") %>
+    <%- include("parts/navbar") %>
+        <br>
+        <div class="container text-center">
+            <!-- <form action="/admin/manageOrders" method="GET" class="my-2">
+                <select name="statusFilter" class="form-control">
+                    <option value="All">All</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Sent">Sent</option>
+                    <option value="Completed">Completed</option>
+                </select>
+                <input type="submit" value="Filter" class="btn btn-primary">
+            </form> -->
+            <form action="/admin/manageOrders" method="GET" class="my-2">
+                <input type="email" name="email" class="form-control w-50" placeholder="Enter an email">
+                <input type="submit" value="Search" class="btn btn-primary">
+            </form>
+            <% if(typeof(searchError) !=="undefined" ) {%>
+                <div class="alert alert-danger w-50 d-inline-block">
+                    <%= searchError %>
+                </div>
+                <% }else {%>
+                    <% if(orders.length==0) {%>
+                        <div class="alert alert-danger w-50 d-inline-block">
+                            There is no orders
+                        </div>
+                        <% }else{ %>
+                            <br>
+                            <table class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Cost</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">Phone</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Date</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(let order of orders) {%>
+                                        <tr>
+                                            <% if(Array.isArray(users)) {%>
+                                                <% for(let user of users) {%>
+                                                    <% if(order.userId==user._id){%>
+                                                        <th scope="row">
+                                                            <%= user.username %>
+                                                        </th>
+                                                        <td>
+                                                            <%= user.email %>
+                                                        </td>
+                                                        <% } %>
+                                                            <% } %>
+                                                                <% }else {%>
+                                                                    <th scope="row">
+                                                                        <%= users.username %>
+                                                                    </th>
+                                                                    <td>
+                                                                        <%= users.email %>
+                                                                    </td>
+                                                                    <% } %>
+                                                                        <td>
+                                                                            <%= order.name %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= order.amount %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= order.price*order.amount %>$
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= order.address %>
+                                                                        </td>
+                                                                        <td>
+                                                                            +20<%= order.phone %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <form action="/admin/statusEditing"
+                                                                                method="POST">
+                                                                                <select name="status"
+                                                                                    class="form-control w-100">
+                                                                                    <option value="<%= order.status %>"
+                                                                                        selected>
+                                                                                        <%= order.status %>
+                                                                                    </option>
+                                                                                    <% for(let i=0; i <
+                                                                                        statusOptions.length ; i++){
+                                                                                        if(statusOptions[i]==order.status)
+                                                                                        {continue;} %>
+                                                                                        <option
+                                                                                            value="<%= statusOptions[i] %>">
+                                                                                            <%= statusOptions[i] %>
+                                                                                        </option>
+                                                                                        <% } %>
+                                                                                </select>
+                                                                        </td>
+                                                                        <input type="hidden" name="orderId"
+                                                                            value="<%= order._id %>">
+
+                                                                        <td>
+                                                                            <%= order.orderDate %>
+                                                                        </td>
+                                                                        <td> <input type="submit" value="Save"
+                                                                                class="btn btn-success">
+                                                                            </form>
+                                                                        </td>
+                                        </tr>
+                                        <% } %>
+                                </tbody>
+                            </table>
+                            <% } %>
+                                <% } %>
+        </div>
+        <%- include("parts/footer") %>

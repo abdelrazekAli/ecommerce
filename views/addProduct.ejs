@@ -1,0 +1,70 @@
+<%- include("parts/header") %>
+    <%- include("parts/navbar") %>
+        <br>
+        <div class="container text-center">
+            <h3>Add Product</h3>
+            <% if(productAdded) {%>
+                <div class="alert alert-success w-50 d-inline-block">
+                    Product added successfully
+                </div>
+                <% } %>
+                    <form action="/admin/addProduct" method="POST" enctype="multipart/form-data">
+                        <input type="text" name="name" placeholder="Name" class="form-control my-2 w-50" required>
+                        <% let error=validationResult.find(err=> err.param === "name") %>
+                            <% if(error) {%>
+                                <div class="alert alert-danger w-50 d-inline-block">
+                                    <%= error.msg %>
+                                </div>
+                                <% } %>
+                                    <input type="number" name="price" placeholder="Price" class="form-control my-2 w-50"
+                                        max="100000" required>
+                                    <% error=validationResult.find(err=> err.param === "price") %>
+                                        <% if(error) {%>
+                                            <div class="alert alert-danger w-50 d-inline-block">
+                                                <%= error.msg %>
+                                            </div>
+                                            <% } %>
+                                                <textarea name="description" placeholder="Description"
+                                                    class="form-control my-2 w-50" rows="3" required></textarea>
+                                                <% error=validationResult.find(err=> err.param ==="description") %>
+                                                    <% if(error) {%>
+                                                        <div class="alert alert-danger w-50 d-inline-block">
+                                                            <%= error.msg %>
+                                                        </div>
+                                                        <% } %>
+                                                            <select name="category" class="form-control my-2  w-50"
+                                                                required>
+                                                                <option value="" disabled selected>Choose a category
+                                                                </option>
+                                                                <option value="computers">Computers</option>
+                                                                <option value="cups">Cups</option>
+                                                                <option value="clothes">Clothes</option>
+                                                                <option value="watches">Watches</option>
+                                                            </select>
+                                                            <% error=validationResult.find(err=> err.param
+                                                                ==="category") %>
+                                                                <% if(error) {%>
+                                                                    <div class="alert alert-danger w-50 d-inline-block">
+                                                                        <%= error.msg %>
+                                                                    </div>
+                                                                    <% } %>
+                                                                        <!-- <div class="custom-file w-50">
+                    <input type="file" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div> -->
+                                                                        <input type="file"
+                                                                            class="form-control my-2 w-50" name="image"
+                                                                            required>
+                                                                        <% error=validationResult.find(err=> err.param
+                                                                            ==="image") %>
+                                                                            <% if(error) {%>
+                                                                                <div
+                                                                                    class="alert alert-danger w-50 d-inline-block">
+                                                                                    <%= error.msg %>
+                                                                                </div>
+                                                                                <% } %>
+                                                                                    <input type="submit" value="Add"
+                                                                                        class="btn btn-primary form-control  w-50">
+                    </form>
+        </div>
+        <%- include("parts/footer") %>

@@ -1,0 +1,68 @@
+<%- include("parts/header") %>
+    <%- include("parts/navbar") %>
+        <div class="container text-center table-responsive">
+            <br>
+            <% if(products.length==0) {%>
+                <div class="alert alert-danger">
+                    There is no Orders in the cart
+                </div>
+                <%}else {%>
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Cost</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Time</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(let product of products) {%>
+                                <tr>
+                                    <th scope="row">
+                                        <%= product.name %>
+                                    </th>
+                                    <td>
+                                        <%= product.amount %>
+                                    </td>
+                                    <td>
+                                        <%= product.amount * product.price %> $
+                                    </td>
+                                    <td>
+                                        <%= product.address %>
+                                    </td>
+                                    <td>
+                                        <%= product.status %>
+                                    </td>
+                                    <td>
+                                        <%= product.orderDate %>
+                                    </td>
+                                    <td>
+                                        <form action="/cart/deleteOrder" method="POST">
+                                            <input type="hidden" name="cartId" value="<%= product._id %>">
+                                            <input type="submit" value="Cancel" class="btn btn-danger">
+                                        </form>
+                                    </td>
+                                </tr>
+                                <% } %>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <form action="/cart/deleteAllOrders" method="POST">
+                                                <input type="submit" value="Cancel All" class="btn btn-danger">
+                                            </form>
+                                        </td>
+                                    </tr>
+                        </tbody>
+                    </table>
+                    <%} %>
+        </div>
+        <%- include("parts/footer") %>

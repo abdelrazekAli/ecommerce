@@ -1,0 +1,41 @@
+<%- include("parts/header") %>
+    <%- include("parts/navbar") %>
+        <div class="container">
+            <% if (!product){ %>
+                <br>
+                <div class="alert alert-danger text-center">
+                    There is no product with this id
+                </div>
+                <% }else{ %>
+                    <% if(validationResult) {%>
+                        <div class="alert alert-danger text-center">
+                            <%= validationResult.msg %>
+                        </div>
+                        <% } %>
+                            <div class="row">
+                                <div class="col col-12 col-md-6 my-2">
+                                    <img src="/<%= product.image %> " height="270px">
+                                    <form action="/cart" method="POST">
+                                        <input type="hidden" name="productName" value="<%= product.name %>">
+                                        <input type="hidden" name="productPrice" value="<%= product.price %>">
+                                        <input type="hidden" name="productId" value="<%= product._id %>">
+                                        <input type="hidden" name="cartRedirect" value="/product/<%= product._id %>">
+                                        <input type="number" name="amount" class="form-control w-50">
+                                        <input type="submit" value="Add to cart" class="btn btn-primary">
+                                    </form>
+                                </div>
+                                <div class="col col-12 col-md-6 my-2">
+                                    <h5 class="card-title">
+                                        <%= product.name %>
+                                            <p>Price: <%= product.price %> $</p>
+                                    </h5>
+                                    <p>
+                                        <%= product.description %>
+                                    </p>
+                                </div>
+                            </div>
+        </div>
+        <% } %>
+
+
+            <%- include("parts/footer") %>

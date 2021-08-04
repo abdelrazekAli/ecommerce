@@ -1,0 +1,33 @@
+<br><br>
+<div class="footer text-center text-white bg-dark py-2 fixed-footer">
+    <div class="container">
+        <div class="font-w-600">
+            &copy; 2021 <a href="mailto:abdelrazek.ali.abdelrazek@gmail.com" title="Mail me"
+                class="letter-space-2 link">Abdelrazek</a>
+        </div>
+    </div>
+</div>
+</div>
+<script src="/js/popper.min.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script>
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+</body>
+
+</html>

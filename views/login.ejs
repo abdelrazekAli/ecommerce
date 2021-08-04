@@ -1,0 +1,44 @@
+<%- include("parts/header") %>
+    <%- include("parts/navbar") %>
+        <div class="container text-center">
+            <h3 class="my-4">Login</h3>
+            <% if(accountCreated) {%>
+                <div class="alert alert-success w-50 d-inline-block">
+                    Account created successfully, You can login now
+                </div>
+                <% } %>
+                    <form action="/login" method="POST" class="needs-validation" novalidate>
+                        <input type="email" name="email" class="form-control my-2 w-50" placeholder="Email" autofocus
+                            required>
+                        <div class="invalid-feedback">
+                            Email is not vaild.
+                        </div>
+                        <% let error=validationErrors.find(err=> err.param === "email") %>
+                            <% if(error) {%>
+                                <div class="alert alert-danger w-50 d-inline-block">
+                                    <%= error.msg %>
+                                </div>
+                                <% } %>
+                                    <input type="password" name="password" class="form-control my-2  w-50"
+                                        placeholder="Password" minlength="6" required>
+                                    <div class="invalid-feedback">
+                                        Password is not vaild.
+                                    </div>
+                                    <% error=validationErrors.find(err=> err.param === "password") %>
+                                        <% if(error) {%>
+                                            <div class="alert alert-danger w-50 d-inline-block">
+                                                <%= error.msg %>
+                                            </div>
+                                            <% } %>
+                                                <input type="submit" value="Login" class="btn btn-primary my-2 w-50">
+                    </form>
+                    <% if(authError) {%>
+                        <div class="alert alert-danger w-50 d-inline-block">
+                            <%= authError %>
+                        </div>
+                        <% } %>
+                            <div class="my-2">
+                                Don't have account ? <a href="/signup">Signup</a>
+                            </div>
+        </div>
+        <%- include("parts/footer") %>
