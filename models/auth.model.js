@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const { getUserCode } = require("../Util/utility");
+const { getUserCode } = require("../util/utility");
 const connectOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 
 mongoose.set("useFindAndModify", false);
