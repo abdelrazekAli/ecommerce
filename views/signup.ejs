@@ -4,7 +4,8 @@
             <h3 class="my-4">Create Account</h3>
             <form action="/signup" method="POST" class="needs-validation" novalidate>
                 <input type="text" name="username" class="form-control my-2 w-50 d-inline-block" placeholder="Username"
-                    autofocus required>
+                    autofocus required value=<%=inputsValues ? inputsValues.username :""%>
+                >
                 <div class="invalid-feedback">
                     Enter your name
                 </div>
@@ -15,7 +16,8 @@
                         </div>
                         <% } %>
                             <input type="email" name="email" class="form-control my-2  w-50" placeholder="Email"
-                                required>
+                                required value=<%=inputsValues ? inputsValues.email :""%>
+                            >
                             <div class="invalid-feedback">
                                 Enter a valid email
                             </div>
@@ -26,7 +28,9 @@
                                     </div>
                                     <% } %>
                                         <input type="password" name="password" class="form-control my-2 w-50"
-                                            placeholder="Password" minlength="6" required>
+                                            placeholder="Password" minlength="6" required value=<%=inputsValues ?
+                                            inputsValues.password :""%>
+                                        >
                                         <div class="invalid-feedback">
                                             Password must be more than 6 characters
                                         </div>
@@ -38,7 +42,9 @@
                                                 <% } %>
                                                     <input type="password" name="confirmPassword"
                                                         class="form-control my-2 w-50" placeholder="Confirm Password"
-                                                        minlength="6" required>
+                                                        minlength="6" required value=<%=inputsValues ?
+                                                        inputsValues.confirmPassword :""%>
+                                                    >
                                                     <% error=validationErrors.find(err=> err.param ===
                                                         "confirmPassword") %>
                                                         <% if(error) {%>

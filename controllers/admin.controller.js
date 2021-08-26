@@ -2,6 +2,7 @@ const productModel = require("../models/product.model");
 const cartModel = require("../models/cart.model");
 const userModel = require("../models/auth.model");
 const validationResult = require("express-validator").validationResult;
+
 exports.getaddProduct = (req, res, next) => {
   res.render("addProduct", {
     isUser: true,
@@ -11,6 +12,7 @@ exports.getaddProduct = (req, res, next) => {
     validationResult: req.flash("validationResult"),
   });
 };
+
 exports.postaddProduct = (req, res, next) => {
   if (validationResult(req).isEmpty()) {
     productModel

@@ -9,7 +9,8 @@
                 <% } %>
                     <form action="/login" method="POST" class="needs-validation" novalidate>
                         <input type="email" name="email" class="form-control my-2 w-50" placeholder="Email" autofocus
-                            required>
+                            required value=<%=inputsValues ? inputsValues.email :""%>
+                        >
                         <div class="invalid-feedback">
                             Email is not vaild.
                         </div>
@@ -20,7 +21,9 @@
                                 </div>
                                 <% } %>
                                     <input type="password" name="password" class="form-control my-2  w-50"
-                                        placeholder="Password" minlength="6" required>
+                                        placeholder="Password" minlength="6" required value=<%=inputsValues ?
+                                        inputsValues.password :""%>
+                                    >
                                     <div class="invalid-feedback">
                                         Password is not vaild.
                                     </div>

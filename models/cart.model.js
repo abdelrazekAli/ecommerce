@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
-const connectOptions = { useNewUrlParser: true, useUnifiedTopology: true }
-const DB_URL =
-  "mongodb+srv://abdelrazek:abdelrazek@cluster0.ya7t9.mongodb.net/ecommerce-store?retryWrites=true&w=majority";
+const connectOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 
 const itemSchema = mongoose.Schema({
   name: String,
@@ -21,7 +19,7 @@ const orderItem = mongoose.model("order", itemSchema);
 exports.addNewItem = (data) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return cartItem.findOne({
           productId: data.productId,
@@ -53,7 +51,7 @@ exports.addNewItem = (data) => {
 exports.getCart = (id) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return cartItem.find({ userId: id }, {}, { sort: { timestamp: 1 } });
       })
@@ -68,7 +66,7 @@ exports.getCart = (id) => {
 exports.editProduct = (id, data) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL,connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return cartItem.updateOne({ _id: id }, data);
       })
@@ -86,7 +84,7 @@ exports.editProduct = (id, data) => {
 exports.deleteProduct = (id) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return cartItem.deleteOne({ _id: id });
       })
@@ -104,7 +102,7 @@ exports.deleteProduct = (id) => {
 exports.deleteAllCart = () => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return cartItem.deleteMany({});
       })
@@ -122,7 +120,7 @@ exports.deleteAllCart = () => {
 exports.addToOrders = (id, updatedData) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return cartItem.updateMany({ userId: id }, updatedData);
       })
@@ -152,7 +150,7 @@ exports.addToOrders = (id, updatedData) => {
 exports.printOrders = (id) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return orderItem.find({ userId: id });
       })
@@ -170,7 +168,7 @@ exports.printOrders = (id) => {
 exports.deleteOrder = (id) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return orderItem.deleteOne({ _id: id });
       })
@@ -188,7 +186,7 @@ exports.deleteOrder = (id) => {
 exports.deleteAllOrders = () => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return orderItem.deleteMany({});
       })
@@ -206,7 +204,7 @@ exports.deleteAllOrders = () => {
 exports.getAllOrders = () => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return orderItem.find({});
       })
@@ -224,7 +222,7 @@ exports.getAllOrders = () => {
 exports.statusEditing = (id, nStatus) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return orderItem.updateOne({ _id: id }, { status: nStatus });
       })
@@ -242,7 +240,7 @@ exports.statusEditing = (id, nStatus) => {
 exports.filterByEmail = (id) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return orderItem.find({ userId: id });
       })

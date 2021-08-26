@@ -1,55 +1,73 @@
 <%- include("parts/header") %>
     <%- include("parts/navbar") %>
         <div class="container text-center">
-            <form action="/" method="GET" class="my-1">
-                <select name="category" class="form-control w-50">
-                    <option value="all">All</option>
-                    <option value="clothes">Clothes</option>
-                    <option value="cups">Cups</option>
-                    <option value="computers">Computers</option>
-                    <option value="watches">Watches</option>
-                </select>
-                <input type="submit" value="Filter" class="btn btn-primary">
-            </form>
-            <% if(validationResult) {%>
-                <div class="alert alert-danger">
-                    <%= validationResult.msg %>
+            <% if(!activeEmail && isUser && !emailSent) {%>
+                <div class="alert alert-warning">
+                    Your Email is not active
+                    <form action="/SendVerifyEmail" method="POST">
+                        <button type="submit" class="btn btn-primary mt-2">Active Now</button>
+                    </form>
                 </div>
                 <% } %>
-                    <% if (products.length===0) {%>
-                        <div class="alert alert-danger">There is no products</div>
-                        <% }else{ %>
-                            <div class="row text-center ">
-                                <% for(let product of products){ %>
-                                    <div class="col col-12 col-md-6 col-lg-4 col-xl-3">
-                                        <div class="card my-1" style="width: 18rem;">
-                                            <a href="/product/<%= product._id %>" title="Show product details">
-                                                <img src="/<%=product.image %>" class="card-img-top" height="270px"
-                                                    alt=<%=product.name %>
-                                                >
-                                            </a>
-                                            <div class="card-body">
-                                                <h5 class="card-title">
-                                                    <a href="/product/<%= product._id %>" title="Show product details">
-                                                        <%= product.name %>
-                                                    </a>
-                                                    <p>Price: <%= product.price %> $</p>
-                                                </h5>
-                                                <form action="/cart" method="POST">
-                                                    <input type="hidden" name="productName" value="<%= product.name %>">
-                                                    <input type="hidden" name="productPrice"
-                                                        value="<%= product.price %>">
-                                                    <input type="hidden" name="productId" value="<%= product._id %>">
-                                                    <input type="hidden" name="cartRedirect" value="/">
-                                                    <input type="number" name="amount" class="form-control w-50">
-                                                    <input type="submit" value="Add to cart" class="btn btn-primary">
-                                                </form>
+                    <% if(!completeActive && isUser && emailSent) {%>
+                        <div class="alert alert-info mt-2">We've sent a new verification email with instructions to you,
+                            please check your email</div>
+                        <% } %>
+                            <form action="/" method="GET" class="my-1">
+                                <select name="category" class="form-control w-50">
+                                    <option value="all">All</option>
+                                    <option value="clothes">Clothes</option>
+                                    <option value="cups">Cups</option>
+                                    <option value="computers">Computers</option>
+                                    <option value="watches">Watches</option>
+                                </select>
+                                <input type="submit" value="Filter" class="btn btn-primary">
+                            </form>
+                            <% if(validationResult) {%>
+                                <div class="alert alert-danger">
+                                    <%= validationResult.msg %>
+                                </div>
+                                <% } %>
+                                    <% if (products.length===0) {%>
+                                        <div class="alert alert-danger mt-2">There is no products</div>
+                                        <% }else{ %>
+                                            <div class="row text-center ">
+                                                <% for(let product of products){ %>
+                                                    <div class="col col-12 col-md-6 col-lg-4 col-xl-3">
+                                                        <div class="card my-1" style="width: 18rem;">
+                                                            <a href="/product/<%= product._id %>"
+                                                                title="Show product details">
+                                                                <img src="/<%=product.image %>" class="card-img-top"
+                                                                    height="270px" alt=<%=product.name %>
+                                                                >
+                                                            </a>
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">
+                                                                    <a href="/product/<%= product._id %>"
+                                                                        title="Show product details">
+                                                                        <%= product.name %>
+                                                                    </a>
+                                                                    <p>Price: <%= product.price %> $</p>
+                                                                </h5>
+                                                                <form action="/cart" method="POST">
+                                                                    <input type="hidden" name="productName"
+                                                                        value="<%= product.name %>">
+                                                                    <input type="hidden" name="productPrice"
+                                                                        value="<%= product.price %>">
+                                                                    <input type="hidden" name="productId"
+                                                                        value="<%= product._id %>">
+                                                                    <input type="hidden" name="cartRedirect" value="/">
+                                                                    <input type="number" name="amount"
+                                                                        class="form-control w-50">
+                                                                    <input type="submit" value="Add to cart"
+                                                                        class="btn btn-primary">
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <% } %>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <% } %>
-                            </div>
-                            <% } %>
+                                            <% } %>
         </div>
 
         <%- include("parts/footer") %>

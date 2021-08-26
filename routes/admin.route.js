@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const bodyParser = require("body-parser").urlencoded({ extended: true });
 const multer = require("multer");
 const adminController = require("../controllers/admin.controller");
 const check = require("express-validator").check;
@@ -42,7 +41,6 @@ router.get(
 router.post(
   "/statusEditing",
   adminGuard.isAdmin,
-  bodyParser,
   adminController.statusEditing
 );
 module.exports = router;

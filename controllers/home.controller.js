@@ -11,6 +11,9 @@ exports.getHome = (req, res, next) => {
         isUser: req.session.userId,
         isAdmin: req.session.isAdmin,
         pageTitle: "Home",
+        activeEmail: req.session.active,
+        completeActive: req.session.completeActive,
+        emailSent: req.session.emailSent,
         validationResult: req.flash("validationResult")[0],
       });
     });
@@ -21,6 +24,9 @@ exports.getHome = (req, res, next) => {
         isUser: req.session.userId,
         isAdmin: req.session.isAdmin,
         pageTitle: "Home",
+        emailSent: req.session.emailSent,
+        activeEmail: req.session.active,
+        completeActive: req.session.completeActive,
         validationResult: req.flash("validationResult")[0],
       });
     });

@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const { getUserCode } = require("../Util/utility");
 const connectOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 
-const DB_URL =
-  "mongodb+srv://abdelrazek:abdelrazek@cluster0.ya7t9.mongodb.net/ecommerce-store?retryWrites=true&w=majority";
+mongoose.set("useFindAndModify", false);
 
 const userSchema = mongoose.Schema({
   username: String,
@@ -13,27 +13,36 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  active: {
+    type: Boolean,
+    default: false,
+  },
+  codeActivation: String,
 });
+
 let User = mongoose.model("user", userSchema);
+
 exports.createNewUser = (username, email, password) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return User.findOne({ email: email });
       })
       .then((user) => {
-        if (user) reject("Email is already used");
-        else return bcrypt.hash(password, 10);
+        if (user) {
+          mongoose.disconnect();
+          reject("Email is already used");
+        } else return bcrypt.hash(password, 10);
       })
       .then((hashedPassword) => {
         let newUser = new User({
           username: username,
           email: email,
           password: hashedPassword,
+          codeActivation: getUserCode(),
         });
         newUser.save((err, result) => {
-          console.log(err);
           mongoose.disconnect();
           resolve();
         });
@@ -48,7 +57,7 @@ exports.createNewUser = (username, email, password) => {
 exports.login = (email, password) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return User.findOne({ email: email });
       })
@@ -74,10 +83,11 @@ exports.login = (email, password) => {
       });
   });
 };
+
 exports.getUsersDate = () => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return User.find({});
       })
@@ -95,13 +105,42 @@ exports.getUsersDate = () => {
 exports.searchEmail = (mail) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return User.findOne({ email: mail });
       })
       .then((userData) => {
         mongoose.disconnect();
         resolve(userData);
+      })
+      .catch((err) => {
+        mongoose.disconnect();
+        reject(err);
+      });
+  });
+};
+
+exports.activateUser = (id, code) => {
+  return new Promise((resolve, reject) => {
+    mongoose
+      .connect(process.env.DATABASE_URL, connectOptions)
+      .then(() => {
+        return User.findOne({
+          _id: mongoose.Types.ObjectId(id),
+          codeActivation: code,
+        });
+      })
+      .then((user) => {
+        if (!user) {
+          mongoose.disconnect();
+          reject("Code is incorrect");
+        } else {
+          return User.findByIdAndUpdate(id, { active: true });
+        }
+      })
+      .then(() => {
+        mongoose.disconnect();
+        resolve();
       })
       .catch((err) => {
         mongoose.disconnect();

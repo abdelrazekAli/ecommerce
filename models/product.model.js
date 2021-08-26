@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 const connectOptions = { useNewUrlParser: true, useUnifiedTopology: true };
-const DB_URL =
-  "mongodb+srv://abdelrazek:abdelrazek@cluster0.ya7t9.mongodb.net/ecommerce-store?retryWrites=true&w=majority";
 
 const productSchema = mongoose.Schema({
   name: String,
@@ -16,7 +14,7 @@ const Product = mongoose.model("product", productSchema);
 exports.getAllProducts = () => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return Product.find({});
       })
@@ -34,7 +32,7 @@ exports.getAllProducts = () => {
 exports.getByCategory = (category) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return Product.find({ category: category });
       })
@@ -51,7 +49,7 @@ exports.getByCategory = (category) => {
 exports.getProductById = (id) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         return Product.findById(id);
       })
@@ -68,7 +66,7 @@ exports.getProductById = (id) => {
 exports.addNewProduct = (data) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(DB_URL, connectOptions)
+      .connect(process.env.DATABASE_URL, connectOptions)
       .then(() => {
         let newProduct = new Product(data);
         return newProduct.save();

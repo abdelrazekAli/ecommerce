@@ -1,13 +1,11 @@
 const router = require("express").Router();
 const cartController = require("../controllers/cart.controller");
-const bodyParser = require("body-parser").urlencoded({ extended: true });
 const check = require("express-validator").check;
 const authGuard = require("../routes/guards/auth.guard");
 router.get("/", authGuard.isUser, cartController.getCart);
 router.post(
   "/",
   authGuard.isUser,
-  bodyParser,
   check("amount")
     .not()
     .isEmpty()
@@ -19,7 +17,6 @@ router.post(
 router.post(
   "/save",
   authGuard.isUser,
-  bodyParser,
   check("amount")
     .not()
     .isEmpty()
@@ -28,38 +25,27 @@ router.post(
     .withMessage("Cart amount must be between 0 and 1000"),
   cartController.updateProduct
 );
-router.post("/delete", authGuard.isUser, bodyParser, cartController.deleteCart);
-router.post(
-  "/deleteAll",
-  authGuard.isUser,
-  bodyParser,
-  cartController.deleteAllCart
-);
+router.post("/delete", authGuard.isUser, cartController.deleteCart);
+router.post("/deleteAll", authGuard.isUser, cartController.deleteAllCart);
 router.post(
   "/deleteOrder",
   authGuard.isUser,
-  bodyParser,
+
   cartController.deleteOrder
 );
 router.post(
   "/deleteAllOrders",
   authGuard.isUser,
-  bodyParser,
+
   cartController.deleteAllOrders
 );
 router.get("/verifyOrders", authGuard.isUser, cartController.getverifyOrders);
-router.post(
-  "/verifyOrders",
-  authGuard.isUser,
-  bodyParser,
-  cartController.postverifyOrders
-);
+router.post("/verifyOrders", authGuard.isUser, cartController.postverifyOrders);
 
 router.get("/orders", authGuard.isUser, cartController.getOrders);
 router.post(
   "/orders",
   authGuard.isUser,
-  bodyParser,
   check("address")
     .not()
     .isEmpty()
