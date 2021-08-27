@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, "images")));
 app.use(flash());
 
 const STORE = new SessionStore({
-  uri: process.env.DATABASE_URL,
+  uri: process.env.DB_URL,
   collection: "sessions",
 });
 app.use(

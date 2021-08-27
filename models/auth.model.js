@@ -25,7 +25,7 @@ let User = mongoose.model("user", userSchema);
 exports.createNewUser = (username, email, password) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DATABASE_URL, connectOptions)
+      .connect(process.env.DB_URL, connectOptions)
       .then(() => {
         return User.findOne({ email: email });
       })
@@ -57,7 +57,7 @@ exports.createNewUser = (username, email, password) => {
 exports.login = (email, password) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DATABASE_URL, connectOptions)
+      .connect(process.env.DB_URL, connectOptions)
       .then(() => {
         return User.findOne({ email: email });
       })
@@ -87,7 +87,7 @@ exports.login = (email, password) => {
 exports.getUsersDate = () => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DATABASE_URL, connectOptions)
+      .connect(process.env.DB_URL, connectOptions)
       .then(() => {
         return User.find({});
       })
@@ -105,7 +105,7 @@ exports.getUsersDate = () => {
 exports.searchEmail = (mail) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DATABASE_URL, connectOptions)
+      .connect(process.env.DB_URL, connectOptions)
       .then(() => {
         return User.findOne({ email: mail });
       })
@@ -123,7 +123,7 @@ exports.searchEmail = (mail) => {
 exports.activateUser = (id, code) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DATABASE_URL, connectOptions)
+      .connect(process.env.DB_URL, connectOptions)
       .then(() => {
         return User.findOne({
           _id: mongoose.Types.ObjectId(id),

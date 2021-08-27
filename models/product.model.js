@@ -14,7 +14,7 @@ const Product = mongoose.model("product", productSchema);
 exports.getAllProducts = () => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DATABASE_URL, connectOptions)
+      .connect(process.env.DB_URL, connectOptions)
       .then(() => {
         return Product.find({});
       })
@@ -32,7 +32,7 @@ exports.getAllProducts = () => {
 exports.getByCategory = (category) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DATABASE_URL, connectOptions)
+      .connect(process.env.DB_URL, connectOptions)
       .then(() => {
         return Product.find({ category: category });
       })
@@ -49,7 +49,7 @@ exports.getByCategory = (category) => {
 exports.getProductById = (id) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DATABASE_URL, connectOptions)
+      .connect(process.env.DB_URL, connectOptions)
       .then(() => {
         return Product.findById(id);
       })
@@ -66,7 +66,7 @@ exports.getProductById = (id) => {
 exports.addNewProduct = (data) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DATABASE_URL, connectOptions)
+      .connect(process.env.DB_URL, connectOptions)
       .then(() => {
         let newProduct = new Product(data);
         return newProduct.save();
