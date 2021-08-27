@@ -36,6 +36,7 @@
                                         <th scope="col">Cost</th>
                                         <th scope="col">Address</th>
                                         <th scope="col">Phone</th>
+                                        <th scope="col">Payment</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Date</th>
                                         <th></th>
@@ -77,6 +78,11 @@
                                                                         </td>
                                                                         <td>
                                                                             +20<%= order.phone %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= order.payment==false
+                                                                                ? "Cash on delivery"
+                                                                                : "Done with paypal" %>
                                                                         </td>
                                                                         <td>
                                                                             <form action="/admin/statusEditing"

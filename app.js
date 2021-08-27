@@ -5,6 +5,7 @@ const dotenv = require("dotenv").config();
 const session = require("express-session");
 const SessionStore = require("connect-mongodb-session")(session);
 const flash = require("connect-flash");
+const paypal = require("paypal-rest-sdk");
 const homeRouter = require("./routes/home.route");
 const productRouter = require("./routes/product.route");
 const authRouter = require("./routes/auth.route");
@@ -33,6 +34,13 @@ app.use(
     resave: true,
   })
 );
+
+//paypal
+paypal.configure({
+  mode: "sandbox",
+  client_id: process.env.PAYPAL_CLIENT_ID,
+  client_secret: process.env.PAYPAL_CLIENT_SECRET,
+});
 
 app.use("/", homeRouter);
 app.use("/product", productRouter);
@@ -75,7 +83,7 @@ app.use((req, res, next) => {
   });
 });
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log("Server is listen on port " + port);
 });

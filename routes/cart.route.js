@@ -2,6 +2,7 @@ const router = require("express").Router();
 const cartController = require("../controllers/cart.controller");
 const check = require("express-validator").check;
 const authGuard = require("../routes/guards/auth.guard");
+
 router.get("/", authGuard.isUser, cartController.getCart);
 router.post(
   "/",
@@ -62,4 +63,10 @@ router.post(
     .withMessage("Phone number is not valid"),
   cartController.postOrders
 );
+
+router.get("/payment", authGuard.isUser, cartController.getPayment);
+router.post("/payment/pay", authGuard.isUser, cartController.paypal);
+router.get("/payment/pay/success", cartController.paypalSuccess);
+router.get("/payment/pay/cancel", cartController.paypalCancel);
+
 module.exports = router;

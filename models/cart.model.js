@@ -12,6 +12,10 @@ const itemSchema = mongoose.Schema({
   phone: Number,
   status: String,
   orderDate: String,
+  payment: {
+    type: Boolean,
+    default: false,
+  },
 });
 const cartItem = mongoose.model("cart", itemSchema);
 const orderItem = mongoose.model("order", itemSchema);
@@ -247,6 +251,27 @@ exports.filterByEmail = (id) => {
       .then((data) => {
         mongoose.disconnect();
         resolve(data);
+      })
+      .catch((err) => {
+        mongoose.disconnect();
+        reject(err);
+      });
+  });
+};
+
+exports.updatePayment = (id) => {
+  return new Promise((resolve, reject) => {
+    mongoose
+      .connect(process.env.DATABASE_URL, connectOptions)
+      .then(() => {
+        return orderItem.updateMany(
+          { userId: id, payment: false },
+          { payment: true }
+        );
+      })
+      .then(() => {
+        mongoose.disconnect();
+        resolve();
       })
       .catch((err) => {
         mongoose.disconnect();

@@ -1,0 +1,54 @@
+<%- include("parts/header") %>
+    <%- include("parts/navbar") %>
+        <div class="container text-center">
+            <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_200x51.png" alt="PayPal"
+                class="my-4" />
+            <p class="my-4">You can pay now with paypal</p>
+            <table class="table table-responsive w-50 m-auto">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(let i=0;i<products.length ;i++) {%>
+                        <tr>
+                            <th scope="row">
+                                <%= i+1 %>
+                            </th>
+                            <td>
+                                <%= products[i].name %>
+                            </td>
+                            <td>
+                                <%= products[i].price %> $
+                            </td>
+                            <td>
+                                <%= products[i].amount %>
+                            </td>
+                            <td>
+                                <%= products[i].price * products[i].amount %> $
+                            </td>
+                        </tr>
+                        <%} %>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <%= totalCost %> $
+                                </td>
+                            </tr>
+                </tbody>
+            </table>
+            <form action="/cart/payment/pay" method="post">
+                <input type="hidden" name="totalCost" value="<%= totalCost %>">
+                <input type="submit" value="Pay now" class="btn btn-primary"></input>
+            </form>
+            <a href="/cart/orders" class="d-inline-block mt-4">or cash on delivery</a>
+        </div>
+        <%- include("parts/footer") %>

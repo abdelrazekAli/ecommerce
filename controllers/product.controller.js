@@ -1,4 +1,5 @@
 const productModel = require("../models/product.model");
+
 exports.getProductById = (req, res, next) => {
   let id = req.params.id;
   productModel.getProductById(id).then((product) => {
