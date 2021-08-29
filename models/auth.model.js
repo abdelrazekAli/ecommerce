@@ -84,7 +84,7 @@ exports.login = (email, password) => {
   });
 };
 
-exports.getUsersDate = () => {
+exports.getUsersData = () => {
   return new Promise((resolve, reject) => {
     mongoose
       .connect(process.env.DB_URL, connectOptions)

@@ -7,7 +7,7 @@
                     Account created successfully, You can login now
                 </div>
                 <% } %>
-                    <form action="/login" method="POST" class="needs-validation" novalidate>
+                    <form action="/login" method="POST" class="needs-validation">
                         <input type="email" name="email" class="form-control my-2 w-50" placeholder="Email" autofocus
                             required value=<%=inputsValues ? inputsValues.email :""%>
                         >

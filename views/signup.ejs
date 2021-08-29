@@ -2,7 +2,7 @@
     <%- include("parts/navbar") %>
         <div class="container text-center">
             <h3 class="my-4">Create Account</h3>
-            <form action="/signup" method="POST" class="needs-validation" novalidate>
+            <form action="/signup" method="POST" class="needs-validation">
                 <input type="text" name="username" class="form-control my-2 w-50 d-inline-block" placeholder="Username"
                     autofocus required value=<%=inputsValues ? inputsValues.username :""%>
                 >

@@ -75,7 +75,7 @@ exports.getManageOrders = (req, res, next) => {
     cartModel
       .getAllOrders()
       .then((ordersData) => {
-        userModel.getUsersDate().then((userData) => {
+        userModel.getUsersData().then((userData) => {
           res.render("manageOrders", {
             isUser: true,
             isAdmin: true,
