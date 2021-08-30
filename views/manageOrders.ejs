@@ -2,15 +2,6 @@
     <%- include("parts/navbar") %>
         <br>
         <div class="container text-center">
-            <!-- <form action="/admin/manageOrders" method="GET" class="my-2">
-                <select name="statusFilter" class="form-control">
-                    <option value="All">All</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Sent">Sent</option>
-                    <option value="Completed">Completed</option>
-                </select>
-                <input type="submit" value="Filter" class="btn btn-primary">
-            </form> -->
             <form action="/admin/manageOrders" method="GET" class="my-2">
                 <input type="email" name="email" class="form-control w-50" placeholder="Enter an email">
                 <input type="submit" value="Search" class="btn btn-primary">

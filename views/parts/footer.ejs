@@ -27,6 +27,19 @@
     //         });
     //     }, false);
     // })();
+
+    //For preview image before upload
+    var uploadPhoto = document.querySelectorAll('*[id^="uploadPhoto"]');
+    var blah = document.querySelectorAll('*[id^="blah"]');
+
+    for (let i = 0; i < uploadPhoto.length; i++) {
+        uploadPhoto[i].onchange = evt => {
+            const [file] = uploadPhoto[i].files
+            if (file) {
+                blah[i].src = URL.createObjectURL(file)
+            }
+        }
+    }
 </script>
 </body>
 

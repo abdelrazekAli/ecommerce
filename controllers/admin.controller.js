@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const productModel = require("../models/product.model");
 const cartModel = require("../models/cart.model");
 const userModel = require("../models/auth.model");
@@ -100,6 +102,102 @@ exports.statusEditing = (req, res, next) => {
         res.redirect("/admin/manageOrders");
       })
       .catch((err) => {
+        next(err);
+      });
+  }
+};
+
+exports.getManageProducts = (req, res, next) => {
+  productModel
+    .getAllProducts()
+    .then((products) => {
+      res.render("manageProducts", {
+        isUser: true,
+        isAdmin: true,
+        pageTitle: "Manage Products",
+        products: products,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
+};
+
+exports.deleteProduct = (req, res, next) => {
+  let id = req.body.productId;
+  let image = req.body.image;
+  productModel
+    .deleteProduct(id)
+    .then(() => {
+      fs.unlink(`images/${image}`, () => {
+        console.log("Deleted.");
+      });
+    })
+    .then(() => {
+      res.redirect("/admin/manageProducts");
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
+};
+
+exports.deleteAllProducts = (req, res, next) => {
+  productModel
+    .deleteAllProducts()
+    .then(() => {
+      fs.readdir("images", (err, files) => {
+        if (err) next(err);
+        for (let file of files) {
+          fs.unlink(`images/${file}`, () => {
+            console.log("Deleted.");
+          });
+        }
+      });
+    })
+    .then(() => {
+      res.redirect("/admin/manageProducts");
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
+};
+
+exports.updateProduct = async (req, res, next) => {
+  if (req.file) {
+    let imageName = req.file.filename;
+    productModel
+      .updateProduct({
+        productId: req.body.productId,
+        name: req.body.name,
+        price: req.body.price,
+        category: req.body.category,
+        description: req.body.description,
+        image: imageName,
+      })
+      .then(() => {
+        let oldImg = `images/${req.body.image}`;
+        if (fs.existsSync(oldImg)) {
+          fs.unlink(oldImg, () => {
+            res.redirect("/admin/manageProducts");
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        next(err);
+      });
+  } else {
+    let productData = req.body;
+    productModel
+      .updateProduct(productData)
+      .then(() => {
+        res.redirect("/admin/manageProducts");
+      })
+      .catch((err) => {
+        console.log(err);
         next(err);
       });
   }

@@ -56,3 +56,16 @@ body {
   }
 }
 /* End Navbar */
+
+/* Start image preview */
+.imgLabel {
+  cursor: pointer;
+  /* Style as you please, it will become the visible UI component. */
+}
+
+.imgInputHidden {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+/* End image preview */

@@ -1,0 +1,89 @@
+<%- include("parts/header") %>
+    <%- include("parts/navbar") %>
+        <div class="container text-center">
+            <br>
+            <button type="button" class="btn btn-primary"><a href="/admin/addProduct" class="link">Add new</a></button>
+            <br><br>
+            <% if(products.length==0) {%>
+                <div class="alert alert-danger w-50 d-inline-block">
+                    There is no Products
+                </div>
+                <%}else {%>
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Image</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(let i=0 ; i< products.length; i++) {%>
+                                <form method="POST">
+                                    <tr>
+                                        <th scope="row">
+                                            <input type="text" name="name" value="<%= products[i].name %>"
+                                                class="form-control w-50">
+                                        </th>
+                                        <td>
+                                            <input type="number" name="price" value="<%= products[i].price %>"
+                                                class="form-control w-50">
+                                        </td>
+                                        <td>
+                                            <select name="category" class="form-control" required>
+                                                <option value="computers" <%=products[i].category=="computers"
+                                                    ? " selected disabled" : "" %> >Computers</option>
+                                                <option value="cups" <%=products[i].category=="cups"
+                                                    ? " selected disabled" : "" %> >Cups</option>
+                                                <option value="clothes" <%=products[i].category=="clothes"
+                                                    ? " selected disabled" : "" %> >Clothes</option>
+                                                <option value="watches" <%=products[i].category=="watches"
+                                                    ? " selected disabled" : "" %> >Watches</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="description" value="<%= products[i].description %>"
+                                                class="form-control w-50">
+                                        </td>
+                                        <td>
+                                            <label class="imgLabel" for="uploadPhoto<%= i %>"><img id="blah<%= i %>"
+                                                    width="50px" height="50px" src="/<%= products[i].image %>"
+                                                    alt="Product image" class="img-thumbnail"></label>
+                                            <input accept="image/*" type='file' id="uploadPhoto<%= i %>" name="image"
+                                                class="imgInputHidden" />
+                                        </td>
+                                        <td>
+                                            <input type="hidden" name="productId" value="<%= products[i]._id %>">
+                                            <input type="hidden" name="image" value="<%= products[i].image %>">
+                                            <input type="submit" value="Save" class="btn btn-success"
+                                                formaction="/admin/updateProduct" formenctype="multipart/form-data">
+                                        </td>
+                                        <td>
+                                            <input type="submit" value="Delete" class="btn btn-danger"
+                                                formaction="/admin/deleteProduct">
+                                </form>
+                                </td>
+                                </tr>
+                                <% } %>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <form action="/admin/deleteAllProducts" method="POST">
+                                                <input type="submit" value="Delete All" class="btn btn-danger">
+                                            </form>
+                                        </td>
+                                    </tr>
+                        </tbody>
+                    </table>
+                    <%} %>
+        </div>
+        <%- include("parts/footer") %>

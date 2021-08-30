@@ -46,6 +46,7 @@ exports.getByCategory = (category) => {
       });
   });
 };
+
 exports.getProductById = (id) => {
   return new Promise((resolve, reject) => {
     mongoose
@@ -63,6 +64,7 @@ exports.getProductById = (id) => {
       });
   });
 };
+
 exports.addNewProduct = (data) => {
   return new Promise((resolve, reject) => {
     mongoose
@@ -70,6 +72,70 @@ exports.addNewProduct = (data) => {
       .then(() => {
         let newProduct = new Product(data);
         return newProduct.save();
+      })
+      .then(() => {
+        mongoose.disconnect();
+        resolve();
+      })
+      .catch((err) => {
+        mongoose.disconnect();
+        reject(err);
+      });
+  });
+};
+
+exports.deleteProduct = (id) => {
+  return new Promise((resolve, reject) => {
+    mongoose
+      .connect(process.env.DB_URL, connectOptions)
+      .then(() => {
+        return Product.deleteOne({ _id: id });
+      })
+      .then(() => {
+        mongoose.disconnect();
+        resolve();
+      })
+      .catch((err) => {
+        mongoose.disconnect();
+        console.log(err);
+        reject(err);
+      });
+  });
+};
+
+exports.deleteAllProducts = () => {
+  return new Promise((resolve, reject) => {
+    mongoose
+      .connect(process.env.DB_URL, connectOptions)
+      .then(() => {
+        return Product.deleteMany({});
+      })
+      .then(() => {
+        mongoose.disconnect();
+        resolve();
+      })
+      .catch((err) => {
+        mongoose.disconnect();
+        reject(err);
+      });
+  });
+};
+
+exports.updateProduct = (data) => {
+  return new Promise((resolve, reject) => {
+    mongoose
+      .connect(process.env.DB_URL, connectOptions)
+      .then(() => {
+        return Product.updateOne(
+          { _id: data.productId },
+          {
+            name: data.name,
+            price: data.price,
+            category: data.category,
+            description: data.description,
+            image: data.image,
+          }
+        );
       })
       .then(() => {
         mongoose.disconnect();

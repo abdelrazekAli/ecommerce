@@ -48,13 +48,9 @@
                                                                         <%= error.msg %>
                                                                     </div>
                                                                     <% } %>
-                                                                        <!-- <div class="custom-file w-50">
-                    <input type="file" class="custom-file-input" id="customFile">
-                    <label class="custom-file-label" for="customFile">Choose file</label>
-                </div> -->
                                                                         <input type="file"
                                                                             class="form-control my-2 w-50" name="image"
-                                                                            required>
+                                                                            required accept="image/*">
                                                                         <% error=validationResult.find(err=> err.param
                                                                             ==="image") %>
                                                                             <% if(error) {%>

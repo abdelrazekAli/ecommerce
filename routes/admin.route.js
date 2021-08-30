@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const multer = require("multer");
+const path = require("path");
 const adminController = require("../controllers/admin.controller");
 const check = require("express-validator").check;
 const adminGuard = require("../routes/guards/auth.guard");
@@ -42,5 +43,48 @@ router.post(
   "/statusEditing",
   adminGuard.isAdmin,
   adminController.statusEditing
+);
+router.get(
+  "/manageProducts",
+  adminGuard.isAdmin,
+  adminController.getManageProducts
+);
+router.post(
+  "/deleteProduct",
+  adminGuard.isAdmin,
+  adminController.deleteProduct
+);
+router.post(
+  "/deleteAllProducts",
+  adminGuard.isAdmin,
+  adminController.deleteAllProducts
+);
+router.post(
+  "/updateProduct",
+  adminGuard.isAdmin,
+  multer({
+    storage: multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, "images");
+      },
+      filename: (req, file, cb) => {
+        cb(null, Date.now() + "-" + file.originalname);
+      },
+    }),
+    fileFilter: (req, file, callback) => {
+      var ext = path.extname(file.originalname);
+      if (
+        ext !== ".png" &&
+        ext !== ".jpg" &&
+        ext !== ".JPG" &&
+        ext !== ".gif" &&
+        ext !== ".jpeg"
+      ) {
+        return callback(new Error("Only images are allowed"));
+      }
+      callback(null, true);
+    },
+  }).single("image"),
+  adminController.updateProduct
 );
 module.exports = router;
