@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const multer = require("multer");
-const path = require("path");
+const { storage, fileFilter } = require("../config/uploadImg");
 const adminController = require("../controllers/admin.controller");
 const check = require("express-validator").check;
 const adminGuard = require("../routes/guards/auth.guard");
@@ -10,14 +10,8 @@ router.post(
   "/addProduct",
   adminGuard.isAdmin,
   multer({
-    storage: multer.diskStorage({
-      destination: (req, file, cb) => {
-        cb(null, "images");
-      },
-      filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + file.originalname);
-      },
-    }),
+    storage: storage,
+    fileFilter: fileFilter,
   }).single("image"),
   check("name").not().isEmpty().withMessage("Name is required"),
   check("price")
@@ -63,27 +57,8 @@ router.post(
   "/updateProduct",
   adminGuard.isAdmin,
   multer({
-    storage: multer.diskStorage({
-      destination: (req, file, cb) => {
-        cb(null, "images");
-      },
-      filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + file.originalname);
-      },
-    }),
-    fileFilter: (req, file, callback) => {
-      var ext = path.extname(file.originalname);
-      if (
-        ext !== ".png" &&
-        ext !== ".jpg" &&
-        ext !== ".JPG" &&
-        ext !== ".gif" &&
-        ext !== ".jpeg"
-      ) {
-        return callback(new Error("Only images are allowed"));
-      }
-      callback(null, true);
-    },
+    storage: storage,
+    fileFilter: fileFilter,
   }).single("image"),
   adminController.updateProduct
 );
