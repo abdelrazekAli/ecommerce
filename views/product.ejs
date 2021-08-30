@@ -3,12 +3,12 @@
         <div class="container">
             <% if (!product){ %>
                 <br>
-                <div class="alert alert-danger text-center">
+                <div class="alert alert-danger text-center  w-50 d-inline-block">
                     There is no product with this id
                 </div>
                 <% }else{ %>
                     <% if(validationResult) {%>
-                        <div class="alert alert-danger text-center">
+                        <div class="alert alert-danger text-center  w-50 d-inline-block">
                             <%= validationResult.msg %>
                         </div>
                         <% } %>

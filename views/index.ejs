@@ -2,7 +2,7 @@
     <%- include("parts/navbar") %>
         <div class="container text-center">
             <% if(!activeEmail && isUser && !emailSent) {%>
-                <div class="alert alert-warning">
+                <div class="alert alert-warning  w-50 d-inline-block">
                     Your Email is not active
                     <form action="/SendVerifyEmail" method="POST">
                         <button type="submit" class="btn btn-primary mt-2">Active Now</button>
@@ -29,7 +29,8 @@
                                 </div>
                                 <% } %>
                                     <% if (products.length===0) {%>
-                                        <div class="alert alert-danger mt-2">There is no products</div>
+                                        <div class="alert alert-danger mt-2  w-50 d-inline-block">There is no products
+                                        </div>
                                         <% }else{ %>
                                             <div class="row text-center ">
                                                 <% for(let product of products){ %>
