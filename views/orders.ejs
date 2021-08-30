@@ -3,17 +3,17 @@
         <div class="container text-center table-responsive">
             <br>
             <% if(successPayment.length !=0) {%>
-                <div class="alert alert-success">
+                <div class="alert alert-success w-50 d-inline-block">
                     Payment successful
                 </div>
                 <% } %>
                     <% if(failPayment.length !=0) {%>
-                        <div class="alert alert-danger">
+                        <div class="alert alert-danger w-50 d-inline-block">
                             Payment failed
                         </div>
                         <% } %>
                             <% if(products.length==0) {%>
-                                <div class="alert alert-danger">
+                                <div class="alert alert-danger w-50 d-inline-block">
                                     There is no orders in the cart
                                 </div>
                                 <%}else {%>
