@@ -25,6 +25,12 @@ body {
 .card {
   display: inline-block;
 }
+.card-img-top{
+  width: 100%;
+  height: 15vw;
+  object-fit: cover;
+}
+
 
 .font-w-600 {
   font-weight: 600;
