@@ -42,11 +42,9 @@ exports.addNewItem = (data) => {
         }
       })
       .then(() => {
-        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -60,7 +58,6 @@ exports.getCart = (id) => {
         return cartItem.find({ userId: id }, {}, { sort: { timestamp: 1 } });
       })
       .then((data) => {
-        mongoose.disconnect();
         resolve(data);
       })
       .catch((err) => reject(err));
@@ -75,11 +72,9 @@ exports.editProduct = (id, data) => {
         return cartItem.updateOne({ _id: id }, data);
       })
       .then(() => {
-        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -93,11 +88,9 @@ exports.deleteProduct = (id) => {
         return cartItem.deleteOne({ _id: id });
       })
       .then(() => {
-        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -111,11 +104,9 @@ exports.deleteAllCart = () => {
         return cartItem.deleteMany({});
       })
       .then(() => {
-        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -141,11 +132,9 @@ exports.addToOrders = (id, updatedData) => {
         return cartItem.deleteMany({});
       })
       .then(() => {
-        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -159,11 +148,9 @@ exports.printOrders = (id) => {
         return orderItem.find({ userId: id });
       })
       .then((data) => {
-        mongoose.disconnect();
         resolve(data);
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -177,11 +164,9 @@ exports.deleteOrder = (id) => {
         return orderItem.deleteOne({ _id: id });
       })
       .then(() => {
-        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -195,11 +180,9 @@ exports.deleteAllOrders = () => {
         return orderItem.deleteMany({});
       })
       .then(() => {
-        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -213,11 +196,9 @@ exports.getAllOrders = () => {
         return orderItem.find({});
       })
       .then((data) => {
-        mongoose.disconnect();
         resolve(data);
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -231,11 +212,9 @@ exports.statusEditing = (id, nStatus) => {
         return orderItem.updateOne({ _id: id }, { status: nStatus });
       })
       .then(() => {
-        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -249,11 +228,9 @@ exports.filterByEmail = (id) => {
         return orderItem.find({ userId: id });
       })
       .then((data) => {
-        mongoose.disconnect();
         resolve(data);
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -270,11 +247,9 @@ exports.updatePayment = (id) => {
         );
       })
       .then(() => {
-        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });

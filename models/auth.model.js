@@ -31,7 +31,6 @@ exports.createNewUser = (username, email, password) => {
       })
       .then((user) => {
         if (user) {
-          mongoose.disconnect();
           reject("Email is already used");
         } else return bcrypt.hash(password, 10);
       })
@@ -43,12 +42,10 @@ exports.createNewUser = (username, email, password) => {
           codeActivation: getUserCode(),
         });
         newUser.save((err, result) => {
-          mongoose.disconnect();
           resolve();
         });
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -63,22 +60,18 @@ exports.login = (email, password) => {
       })
       .then((user) => {
         if (!user) {
-          mongoose.disconnect();
           reject("There is no user matches this email");
         } else {
           bcrypt.compare(password, user.password).then((same) => {
             if (!same) {
-              mongoose.disconnect();
               reject("Password is incorrect");
             } else {
-              mongoose.disconnect();
               resolve(user);
             }
           });
         }
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -92,11 +85,9 @@ exports.getUsersData = () => {
         return User.find({});
       })
       .then((userData) => {
-        mongoose.disconnect();
         resolve(userData);
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -110,11 +101,9 @@ exports.searchEmail = (mail) => {
         return User.findOne({ email: mail });
       })
       .then((userData) => {
-        mongoose.disconnect();
         resolve(userData);
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -132,18 +121,15 @@ exports.activateUser = (id, code) => {
       })
       .then((user) => {
         if (!user) {
-          mongoose.disconnect();
           reject("Code is incorrect");
         } else {
           return User.findByIdAndUpdate(id, { active: true });
         }
       })
       .then(() => {
-        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });

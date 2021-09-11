@@ -6,6 +6,9 @@ const session = require("express-session");
 const SessionStore = require("connect-mongodb-session")(session);
 const flash = require("connect-flash");
 const paypal = require("paypal-rest-sdk");
+const mongoose = require("mongoose");
+const Grid = require("gridfs-stream");
+const methodOverride = require("method-override");
 const homeRouter = require("./routes/home.route");
 const productRouter = require("./routes/product.route");
 const authRouter = require("./routes/auth.route");
@@ -15,8 +18,9 @@ const adminRouter = require("./routes/admin.route");
 app.set("view engine", "ejs");
 app.set("views", "views");
 
-app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(methodOverride("_method"));
+app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, "assets")));
 app.use(express.static(path.join(__dirname, "images")));
@@ -35,18 +39,58 @@ app.use(
   })
 );
 
-//paypal
+// paypal
 paypal.configure({
   mode: "sandbox",
   client_id: process.env.PAYPAL_CLIENT_ID,
   client_secret: process.env.PAYPAL_CLIENT_SECRET,
 });
 
+//Upload products images to mongodb
+
+// Create mongo connection
+const conn = mongoose.createConnection(process.env.DB_URL, {
+  useNewUrlParser: true,
+});
+
+// Init gfs
+let gfs;
+
+conn.once("open", () => {
+  // Init stream
+  gfs = Grid(conn.db, mongoose.mongo);
+  gfs.collection("uploads");
+});
+
+app.use(authRouter);
 app.use("/", homeRouter);
 app.use("/product", productRouter);
-app.use(authRouter);
 app.use("/cart", cartRouter);
 app.use("/admin", adminRouter);
+
+// @route GET /image/:filename
+// @desc Display Image
+app.get("/image/:filename", (req, res) => {
+  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+    // Check if file
+    if (!file || file.length === 0) {
+      return res.status(404).json({
+        err: "No file exists",
+      });
+    }
+
+    // Check if image
+    if (file.contentType === "image/jpeg" || file.contentType === "image/png") {
+      // Read output to browser
+      const readstream = gfs.createReadStream(file.filename);
+      readstream.pipe(res);
+    } else {
+      res.status(404).json({
+        err: "Not an image",
+      });
+    }
+  });
+});
 
 app.get("/", (req, res, next) => {
   res.render("index");

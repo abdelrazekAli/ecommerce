@@ -19,11 +19,9 @@ exports.getAllProducts = () => {
         return Product.find({});
       })
       .then((products) => {
-        mongoose.disconnect();
         resolve(products);
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -37,11 +35,9 @@ exports.getByCategory = (category) => {
         return Product.find({ category: category });
       })
       .then((products) => {
-        mongoose.disconnect();
         resolve(products);
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -55,11 +51,9 @@ exports.getProductById = (id) => {
         return Product.findById(id);
       })
       .then((product) => {
-        mongoose.disconnect();
         resolve(product);
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -74,11 +68,9 @@ exports.addNewProduct = (data) => {
         return newProduct.save();
       })
       .then(() => {
-        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -92,11 +84,9 @@ exports.deleteProduct = (id) => {
         return Product.deleteOne({ _id: id });
       })
       .then(() => {
-        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
-        mongoose.disconnect();
         console.log(err);
         reject(err);
       });
@@ -111,11 +101,9 @@ exports.deleteAllProducts = () => {
         return Product.deleteMany({});
       })
       .then(() => {
-        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });
@@ -138,11 +126,9 @@ exports.updateProduct = (data) => {
         );
       })
       .then(() => {
-        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
-        mongoose.disconnect();
         reject(err);
       });
   });

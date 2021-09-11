@@ -1,5 +1,4 @@
 const fs = require("fs");
-const path = require("path");
 const productModel = require("../models/product.model");
 const cartModel = require("../models/cart.model");
 const userModel = require("../models/auth.model");
@@ -178,12 +177,7 @@ exports.updateProduct = async (req, res, next) => {
         image: imageName,
       })
       .then(() => {
-        let oldImg = `images/${req.body.image}`;
-        if (fs.existsSync(oldImg)) {
-          fs.unlink(oldImg, () => {
-            res.redirect("/admin/manageProducts");
-          });
-        }
+        res.redirect("/admin/manageProducts");
       })
       .catch((err) => {
         console.log(err);

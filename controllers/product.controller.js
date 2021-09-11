@@ -1,4 +1,6 @@
 const productModel = require("../models/product.model");
+const mongoose = require("mongoose");
+const Grid = require("gridfs-stream");
 
 exports.getProductById = (req, res, next) => {
   let id = req.params.id;

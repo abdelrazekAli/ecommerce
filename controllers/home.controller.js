@@ -1,5 +1,4 @@
 const productsModel = require("../models/product.model");
-const validationResult = require("express-validator").validationResult;
 
 exports.getHome = (req, res, next) => {
   let category = req.query.category;

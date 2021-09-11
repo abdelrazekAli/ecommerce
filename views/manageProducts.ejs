@@ -2,7 +2,7 @@
     <%- include("parts/navbar") %>
         <div class="container text-center">
             <br>
-            <button type="button" class="btn btn-primary"><a href="/admin/addProduct" class="link">Add new</a></button>
+            <a href="/admin/addProduct" class="link btn btn-primary">Add new</a>
             <br><br>
             <% if(products.length==0) {%>
                 <div class="alert alert-danger w-50 d-inline-block">
@@ -51,9 +51,9 @@
                                         </td>
                                         <td>
                                             <label class="imgLabel" for="uploadPhoto<%= i %>"><img id="blah<%= i %>"
-                                                    width="50px" height="50px" src="/<%= products[i].image %>"
+                                                    width="50px" height="50px" src="/image/<%= products[i].image %>"
                                                     alt="Product image" class="img-thumbnail"></label>
-                                            <input accept="image/*" type='file' id="uploadPhoto<%= i %>" name="image"
+                                            <input accept="image/*" type='file' id="uploadPhoto<%= i %>" name="file"
                                                 class="imgInputHidden" />
                                         </td>
                                         <td>

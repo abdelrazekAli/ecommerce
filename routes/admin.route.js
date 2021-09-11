@@ -1,18 +1,17 @@
 const router = require("express").Router();
 const multer = require("multer");
-const { storage, fileFilter } = require("../config/uploadImg");
+const { storage } = require("../config/uploadImg");
 const adminController = require("../controllers/admin.controller");
 const check = require("express-validator").check;
 const adminGuard = require("../routes/guards/auth.guard");
+
+const upload = multer({ storage });
 
 router.get("/addProduct", adminGuard.isAdmin, adminController.getaddProduct);
 router.post(
   "/addProduct",
   adminGuard.isAdmin,
-  multer({
-    storage: storage,
-    fileFilter: fileFilter,
-  }).single("image"),
+  upload.single("file"),
   check("name").not().isEmpty().withMessage("Name is required"),
   check("price")
     .not()
@@ -22,7 +21,7 @@ router.post(
     .withMessage("Price must be between 0 and 100000"),
   check("description").not().isEmpty().withMessage("Description is required"),
   check("category").not().isEmpty().withMessage("Category is required"),
-  check("image").custom((value, { req }) => {
+  check("file").custom((value, { req }) => {
     if (req.file) return true;
     else throw "Image is required";
   }),
@@ -56,10 +55,7 @@ router.post(
 router.post(
   "/updateProduct",
   adminGuard.isAdmin,
-  multer({
-    storage: storage,
-    fileFilter: fileFilter,
-  }).single("image"),
+  upload.single("file"),
   adminController.updateProduct
 );
 module.exports = router;
