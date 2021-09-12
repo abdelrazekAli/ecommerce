@@ -165,6 +165,7 @@ exports.deleteAllProducts = (req, res, next) => {
 };
 
 exports.updateProduct = async (req, res, next) => {
+  console.log(req.body);
   if (req.file) {
     let imageName = req.file.filename;
     productModel
