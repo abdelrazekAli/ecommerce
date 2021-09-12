@@ -73,7 +73,9 @@
                                                         <td></td>
                                                         <td></td>
                                                         <td>
-                                                            <form action="/cart/deleteAllOrders" method="POST">
+                                                            <form action="/cart/deleteAllUserOrders" method="POST">
+                                                                <input type="hidden" name="userId"
+                                                                    value="<%= userId %>">
                                                                 <input type="submit" value="Cancel All"
                                                                     class="btn btn-danger">
                                                             </form>

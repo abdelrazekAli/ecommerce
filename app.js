@@ -51,6 +51,7 @@ paypal.configure({
 // Create mongo connection
 const conn = mongoose.createConnection(process.env.DB_URL, {
   useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
 // Init gfs

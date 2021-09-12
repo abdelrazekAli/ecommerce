@@ -60,6 +60,18 @@ exports.deleteAllCart = (req, res, next) => {
     });
 };
 
+exports.deleteAllUserOrders = (req, res, next) => {
+  userId = req.body.userId;
+  cartModel
+    .deleteAllUserOrders(userId)
+    .then(() => {
+      res.redirect("/cart");
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
 exports.getverifyOrders = (req, res, next) => {
   cartModel
     .getCart(req.session.userId)
@@ -88,6 +100,7 @@ exports.getOrders = (req, res, next) => {
     res.render("orders", {
       isUser: true,
       isAdmin: req.session.isAdmin,
+      userId: req.session.userId,
       pageTitle: "Orders",
       products: productsData,
       successPayment: req.flash("success"),

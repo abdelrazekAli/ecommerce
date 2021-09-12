@@ -172,6 +172,22 @@ exports.deleteOrder = (id) => {
   });
 };
 
+exports.deleteAllUserOrders = (userId) => {
+  return new Promise((resolve, reject) => {
+    mongoose
+      .connect(process.env.DB_URL, connectOptions)
+      .then(() => {
+        return orderItem.deleteMany({ userId: userId });
+      })
+      .then(() => {
+        resolve();
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
 exports.deleteAllOrders = () => {
   return new Promise((resolve, reject) => {
     mongoose

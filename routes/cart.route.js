@@ -40,6 +40,13 @@ router.post(
 
   cartController.deleteAllOrders
 );
+router.post(
+  "/deleteAllUserOrders",
+  authGuard.isUser,
+
+  cartController.deleteAllUserOrders
+);
+
 router.get("/verifyOrders", authGuard.isUser, cartController.getverifyOrders);
 router.post("/verifyOrders", authGuard.isUser, cartController.postverifyOrders);
 
