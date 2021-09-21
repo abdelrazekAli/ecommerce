@@ -19,6 +19,10 @@ select {
 .invalid-feedback {
   font-size: 100% !important;
 }
+.custom-table td,
+.custom-table th {
+  padding: 4px !important;
+}
 @media (max-width: 992px) {
   .w-50 {
     width: 100% !important;
