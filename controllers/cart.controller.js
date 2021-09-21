@@ -16,20 +16,22 @@ exports.getCart = (req, res, next) => {
 };
 
 exports.postCart = (req, res, next) => {
+  let { productName, productPrice, amount, productId } = req.body;
   if (validationResult(req).isEmpty()) {
     cartModel
       .addNewItem({
-        name: req.body.productName,
-        price: req.body.productPrice,
-        amount: +req.body.amount,
+        name: productName,
+        price: productPrice,
+        amount: +amount,
+        productId: productId,
         userId: req.session.userId,
-        productId: req.body.productId,
         timestamp: Date.now(),
       })
       .then(() => {
         res.redirect("/cart");
       })
       .catch((err) => {
+        console.log(err);
         next(err);
       });
   } else {
@@ -39,12 +41,14 @@ exports.postCart = (req, res, next) => {
 };
 
 exports.deleteCart = (req, res, next) => {
+  let { cartId } = req.body;
   cartModel
-    .deleteProduct(req.body.cartId)
+    .deleteProduct(cartId)
     .then(() => {
       res.redirect("/cart");
     })
     .catch((err) => {
+      console.log(err);
       next(err);
     });
 };
@@ -56,18 +60,20 @@ exports.deleteAllCart = (req, res, next) => {
       res.redirect("/cart");
     })
     .catch((err) => {
+      console.log(err);
       next(err);
     });
 };
 
 exports.deleteAllUserOrders = (req, res, next) => {
-  userId = req.body.userId;
+  let userId = req.body.userId;
   cartModel
     .deleteAllUserOrders(userId)
     .then(() => {
       res.redirect("/cart");
     })
     .catch((err) => {
+      console.log(err);
       next(err);
     });
 };
@@ -110,11 +116,12 @@ exports.getOrders = (req, res, next) => {
 };
 
 exports.postOrders = (req, res, next) => {
+  let { address, phone } = req.body;
   if (validationResult(req).isEmpty()) {
     cartModel
       .addToOrders(req.session.userId, {
-        address: req.body.address,
-        phone: req.body.phone,
+        address: address,
+        phone: phone,
         status: "Pending",
         orderDate: new Date().toDateString(),
       })
@@ -122,6 +129,7 @@ exports.postOrders = (req, res, next) => {
         res.redirect("/cart/payment");
       })
       .catch((err) => {
+        console.log(err);
         next(err);
       });
   } else {
@@ -131,12 +139,14 @@ exports.postOrders = (req, res, next) => {
 };
 
 exports.deleteOrder = (req, res, next) => {
+  let { cartId } = req.body;
   cartModel
-    .deleteOrder(req.body.cartId)
+    .deleteOrder(cartId)
     .then(() => {
       res.redirect("/cart/orders");
     })
     .catch((err) => {
+      console.log(err);
       next(err);
     });
 };
@@ -148,6 +158,7 @@ exports.deleteAllOrders = (req, res, next) => {
       res.redirect("/cart/orders");
     })
     .catch((err) => {
+      console.log(err);
       next(err);
     });
 };
@@ -163,6 +174,7 @@ exports.updateProduct = (req, res, next) => {
         res.redirect("/cart");
       })
       .catch((err) => {
+        console.log(err);
         next(err);
       });
   } else {
@@ -172,13 +184,18 @@ exports.updateProduct = (req, res, next) => {
 };
 
 exports.getPayment = (req, res, next) => {
+  // Print user orders
   cartModel.printOrders(req.session.userId).then((productsData) => {
     let filterProducts = productsData.filter((product) => {
       return product.payment != true;
     });
+
+    // Calculate total cost of orders
     let totalCost = filterProducts.reduce((current, product) => {
       return product.price * product.amount + current;
     }, 0);
+
+    // Render payment page
     res.render("payment", {
       isUser: true,
       isAdmin: req.session.isAdmin,
@@ -235,6 +252,7 @@ exports.paypalSuccess = (req, res, next) => {
         console.log(error.response);
         throw error;
       } else {
+        // logging payments to payment.log
         logger.info(payment);
         cartModel
           .updatePayment(req.session.userId)
@@ -242,7 +260,10 @@ exports.paypalSuccess = (req, res, next) => {
             req.flash("success", "Successfully payment");
             res.redirect("/cart/orders");
           })
-          .catch((err) => next(err));
+          .catch((err) => {
+            console.log(err);
+            next(err);
+          });
       }
     }
   );

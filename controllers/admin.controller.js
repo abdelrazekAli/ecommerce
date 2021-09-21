@@ -15,13 +15,16 @@ exports.getaddProduct = (req, res, next) => {
 };
 
 exports.postaddProduct = (req, res, next) => {
+  let { name, price, category, description } = req.body;
+
+  // Check is any validation error
   if (validationResult(req).isEmpty()) {
     productModel
       .addNewProduct({
-        name: req.body.name,
-        price: req.body.price,
-        category: req.body.category,
-        description: req.body.description,
+        name: name,
+        price: price,
+        category: category,
+        description: description,
         image: req.file.filename,
       })
       .then(() => {
@@ -34,6 +37,7 @@ exports.postaddProduct = (req, res, next) => {
         });
       })
       .catch((err) => {
+        console.log(err);
         next(err);
       });
   } else {
@@ -43,7 +47,9 @@ exports.postaddProduct = (req, res, next) => {
 };
 
 exports.getManageOrders = (req, res, next) => {
-  let email = req.query.email;
+  const email = req.query.email;
+  const statusOptions = ["Pending", "Sent", "Completed"];
+
   if (email) {
     userModel
       .searchEmail(req.query.email)
@@ -56,7 +62,7 @@ exports.getManageOrders = (req, res, next) => {
               pageTitle: "Manage Orders",
               orders: filterOrders,
               users: user,
-              statusOptions: ["Pending", "Sent", "Completed"],
+              statusOptions: statusOptions,
             });
           });
         } else {
@@ -65,11 +71,12 @@ exports.getManageOrders = (req, res, next) => {
             isAdmin: true,
             pageTitle: "Manage Orders",
             searchError: "This email does not has any orders",
-            statusOptions: ["Pending", "Sent", "Completed"],
+            statusOptions: statusOptions,
           });
         }
       })
       .catch((err) => {
+        console.log(err);
         next(err);
       });
   } else {
@@ -83,24 +90,27 @@ exports.getManageOrders = (req, res, next) => {
             pageTitle: "Manage Orders",
             orders: ordersData,
             users: userData,
-            statusOptions: ["Pending", "Sent", "Completed"],
+            statusOptions: statusOptions,
           });
         });
       })
       .catch((err) => {
+        console.log(err);
         next(err);
       });
   }
 };
 
 exports.statusEditing = (req, res, next) => {
-  if (req.body.status) {
+  let { orderId, status } = req.body;
+  if (status) {
     cartModel
-      .statusEditing(req.body.orderId, req.body.status)
+      .statusEditing(orderId, status)
       .then(() => {
         res.redirect("/admin/manageOrders");
       })
       .catch((err) => {
+        console.log(err);
         next(err);
       });
   }
@@ -124,11 +134,11 @@ exports.getManageProducts = (req, res, next) => {
 };
 
 exports.deleteProduct = (req, res, next) => {
-  let id = req.body.productId;
-  let image = req.body.image;
+  let { id, image } = req.body;
   productModel
     .deleteProduct(id)
     .then(() => {
+      // Delete product image
       fs.unlink(`images/${image}`, () => {
         console.log("Deleted.");
       });
@@ -146,8 +156,12 @@ exports.deleteAllProducts = (req, res, next) => {
   productModel
     .deleteAllProducts()
     .then(() => {
+      // Delete all products images
       fs.readdir("images", (err, files) => {
-        if (err) next(err);
+        if (err) {
+          console.log(err);
+          next(err);
+        }
         for (let file of files) {
           fs.unlink(`images/${file}`, () => {
             console.log("Deleted.");
@@ -160,21 +174,22 @@ exports.deleteAllProducts = (req, res, next) => {
     })
     .catch((err) => {
       console.log(err);
+      console.log(err);
       next(err);
     });
 };
 
 exports.updateProduct = async (req, res, next) => {
-  console.log(req.body);
   if (req.file) {
     let imageName = req.file.filename;
+    let { productId, name, price, category, description } = req.body;
     productModel
       .updateProduct({
-        productId: req.body.productId,
-        name: req.body.name,
-        price: req.body.price,
-        category: req.body.category,
-        description: req.body.description,
+        productId: productId,
+        name: name,
+        price: price,
+        category: category,
+        description: description,
         image: imageName,
       })
       .then(() => {

@@ -2,7 +2,7 @@ const path = require("path");
 const crypto = require("crypto");
 const GridFsStorage = require("multer-gridfs-storage");
 
-// Create storage engine
+// Create storage for upload images
 exports.storage = new GridFsStorage({
   url: process.env.DB_URL,
   file: (req, file) => {
@@ -22,16 +22,12 @@ exports.storage = new GridFsStorage({
   },
 });
 
+// Filter images
 exports.fileFilter = (req, file, callback) => {
-  var ext = path.extname(file.originalname);
-  if (
-    ext !== ".png" &&
-    ext !== ".jpg" &&
-    ext !== ".JPG" &&
-    ext !== ".gif" &&
-    ext !== ".jpeg"
-  ) {
+  const imgExtension = path.extname(file.originalname);
+  const allowedExtension = [".png", ".jpg", ".JPG", ".jpeg", ".svg", ".webp"];
+
+  if (!allowedExtension.includes(imgExtension))
     return callback(new Error("Only images are allowed"));
-  }
   callback(null, true);
 };

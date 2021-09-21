@@ -10,7 +10,6 @@ body {
   bottom: 0;
   width: 100%;
 }
-
 .form-control {
   display: inline-block;
 }
@@ -65,9 +64,7 @@ body {
 /* Start image preview */
 .imgLabel {
   cursor: pointer;
-  /* Style as you please, it will become the visible UI component. */
 }
-
 .imgInputHidden {
   opacity: 0;
   position: absolute;

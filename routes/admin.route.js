@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const multer = require("multer");
-const { storage } = require("../config/uploadImg");
 const adminController = require("../controllers/admin.controller");
 const check = require("express-validator").check;
 const adminGuard = require("../routes/guards/auth.guard");
 
+const { storage } = require("../config/uploadImg");
 const upload = multer({ storage });
 
 router.get("/addProduct", adminGuard.isAdmin, adminController.getaddProduct);

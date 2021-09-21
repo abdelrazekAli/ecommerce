@@ -9,6 +9,8 @@ const paypal = require("paypal-rest-sdk");
 const mongoose = require("mongoose");
 const Grid = require("gridfs-stream");
 const methodOverride = require("method-override");
+
+// Import Routes
 const homeRouter = require("./routes/home.route");
 const productRouter = require("./routes/product.route");
 const authRouter = require("./routes/auth.route");
@@ -26,6 +28,7 @@ app.use(express.static(path.join(__dirname, "assets")));
 app.use(express.static(path.join(__dirname, "images")));
 app.use(flash());
 
+// Setup session
 const STORE = new SessionStore({
   uri: process.env.DB_URL,
   collection: "sessions",
@@ -39,7 +42,7 @@ app.use(
   })
 );
 
-// paypal
+// Setup paypal sandbox
 paypal.configure({
   mode: "sandbox",
   client_id: process.env.PAYPAL_CLIENT_ID,
@@ -130,5 +133,5 @@ app.use((req, res, next) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log("Server is listen on port " + port);
+  console.log(`Server is listen on port : ${port}`);
 });

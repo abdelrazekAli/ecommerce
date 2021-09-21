@@ -17,6 +17,7 @@ const itemSchema = mongoose.Schema({
     default: false,
   },
 });
+
 const cartItem = mongoose.model("cart", itemSchema);
 const orderItem = mongoose.model("order", itemSchema);
 
