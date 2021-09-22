@@ -133,31 +133,6 @@ exports.getManageProducts = (req, res, next) => {
     });
 };
 
-exports.deleteProduct = (req, res, next) => {
-  let { productId } = req.body;
-  productModel
-    .deleteProduct(productId)
-    .then(() => {
-      res.redirect("/admin/manageProducts");
-    })
-    .catch((err) => {
-      console.log(err);
-      next(err);
-    });
-};
-
-exports.deleteAllProducts = (req, res, next) => {
-  productModel
-    .deleteAllProducts()
-    .then(() => {
-      res.redirect("/admin/manageProducts");
-    })
-    .catch((err) => {
-      console.log(err);
-      next(err);
-    });
-};
-
 exports.updateProduct = async (req, res, next) => {
   if (req.file) {
     let imageName = req.file.filename;
@@ -190,4 +165,29 @@ exports.updateProduct = async (req, res, next) => {
         next(err);
       });
   }
+};
+
+exports.deleteProduct = (req, res, next) => {
+  let { productId } = req.body;
+  productModel
+    .deleteProduct(productId)
+    .then(() => {
+      res.redirect("/admin/manageProducts");
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
+};
+
+exports.deleteAllProducts = (req, res, next) => {
+  productModel
+    .deleteAllProducts()
+    .then(() => {
+      res.redirect("/admin/manageProducts");
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
 };
