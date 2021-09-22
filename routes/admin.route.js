@@ -1,8 +1,8 @@
-const router = require("express").Router();
 const multer = require("multer");
-const adminController = require("../controllers/admin.controller");
+const router = require("express").Router();
 const check = require("express-validator").check;
 const { isAdmin } = require("../routes/guards/auth.guard");
+const adminController = require("../controllers/admin.controller");
 
 // Setup upload storage
 const { storage } = require("../config/uploadImg");

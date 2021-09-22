@@ -1,6 +1,6 @@
-const validationResult = require("express-validator").validationResult;
-const authModel = require("../models/auth.model");
 const { sendMail } = require("../util/utility");
+const authModel = require("../models/auth.model");
+const validationResult = require("express-validator").validationResult;
 
 exports.getSignup = (req, res, next) => {
   res.render("signup", {

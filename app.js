@@ -1,14 +1,14 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const dotenv = require("dotenv").config();
-const session = require("express-session");
-const SessionStore = require("connect-mongodb-session")(session);
-const flash = require("connect-flash");
-const paypal = require("paypal-rest-sdk");
 const mongoose = require("mongoose");
 const Grid = require("gridfs-stream");
+const flash = require("connect-flash");
+const paypal = require("paypal-rest-sdk");
+const dotenv = require("dotenv").config();
+const session = require("express-session");
 const methodOverride = require("method-override");
+const SessionStore = require("connect-mongodb-session")(session);
 
 // Import Routes
 const homeRouter = require("./routes/home.route");
@@ -17,16 +17,17 @@ const authRouter = require("./routes/auth.route");
 const cartRouter = require("./routes/cart.route");
 const adminRouter = require("./routes/admin.route");
 
+// Set template engine to ejs
 app.set("view engine", "ejs");
 app.set("views", "views");
 
+app.use(flash());
 app.use(express.json());
 app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, "assets")));
 app.use(express.static(path.join(__dirname, "images")));
-app.use(flash());
 
 // Setup session
 const STORE = new SessionStore({
@@ -59,13 +60,13 @@ const conn = mongoose.createConnection(process.env.DB_URL, {
 
 // Init gfs
 let gfs;
-
 conn.once("open", () => {
   // Init stream
   gfs = Grid(conn.db, mongoose.mongo);
   gfs.collection("uploads");
 });
 
+// Routes Middlewares
 app.use(authRouter);
 app.use("/", homeRouter);
 app.use("/product", productRouter);
@@ -85,7 +86,7 @@ app.get("/image/:filename", (req, res) => {
 
     // Check if image
     if (file.contentType === "image/jpeg" || file.contentType === "image/png") {
-      // Read output to browser
+      // Read output to client
       const readstream = gfs.createReadStream(file.filename);
       readstream.pipe(res);
     } else {

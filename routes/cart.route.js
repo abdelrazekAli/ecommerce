@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const cartController = require("../controllers/cart.controller");
 const check = require("express-validator").check;
 const { isUser } = require("../routes/guards/auth.guard");
+const cartController = require("../controllers/cart.controller");
 
 router.get("/", isUser, cartController.getCart);
 

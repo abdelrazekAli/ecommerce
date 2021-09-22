@@ -1,8 +1,10 @@
 const fs = require("fs");
-const productModel = require("../models/product.model");
+const validationResult = require("express-validator").validationResult;
+
+// Import models
 const cartModel = require("../models/cart.model");
 const userModel = require("../models/auth.model");
-const validationResult = require("express-validator").validationResult;
+const productModel = require("../models/product.model");
 
 exports.getaddProduct = (req, res, next) => {
   res.render("addProduct", {

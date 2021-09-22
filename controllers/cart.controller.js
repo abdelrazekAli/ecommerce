@@ -1,7 +1,7 @@
-const cartModel = require("../models/cart.model");
-const validationResult = require("express-validator").validationResult;
 const paypal = require("paypal-rest-sdk");
 const logger = require("../config/logger");
+const cartModel = require("../models/cart.model");
+const validationResult = require("express-validator").validationResult;
 
 exports.getCart = (req, res, next) => {
   cartModel.getCart(req.session.userId).then((productsData) => {

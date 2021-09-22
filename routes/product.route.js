@@ -1,6 +1,8 @@
 const router = require("express").Router();
-const productController = require("../controllers/product.controller");
+
+// Import controllers
 const homeController = require("../controllers/home.controller");
+const productController = require("../controllers/product.controller");
 
 router.get("/", homeController.getHome);
 router.get("/:id", productController.getProductById);

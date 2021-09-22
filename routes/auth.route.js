@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const check = require("express-validator").check;
-const authController = require("../controllers/auth.controller");
 const { isNotUser } = require("../routes/guards/auth.guard");
+const authController = require("../controllers/auth.controller");
 
 router.get("/signup", isNotUser, authController.getSignup);
 
