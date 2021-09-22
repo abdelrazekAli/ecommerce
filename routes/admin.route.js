@@ -2,15 +2,16 @@ const router = require("express").Router();
 const multer = require("multer");
 const adminController = require("../controllers/admin.controller");
 const check = require("express-validator").check;
-const adminGuard = require("../routes/guards/auth.guard");
+const { isAdmin } = require("../routes/guards/auth.guard");
 
+// Setup upload storage
 const { storage } = require("../config/uploadImg");
 const upload = multer({ storage });
 
-router.get("/addProduct", adminGuard.isAdmin, adminController.getaddProduct);
+router.get("/addProduct", isAdmin, adminController.getaddProduct);
 router.post(
   "/addProduct",
-  adminGuard.isAdmin,
+  isAdmin,
   upload.single("file"),
   check("name").not().isEmpty().withMessage("Name is required"),
   check("price")
@@ -27,35 +28,22 @@ router.post(
   }),
   adminController.postaddProduct
 );
-router.get(
-  "/manageOrders",
-  adminGuard.isAdmin,
-  adminController.getManageOrders
-);
-router.post(
-  "/statusEditing",
-  adminGuard.isAdmin,
-  adminController.statusEditing
-);
-router.get(
-  "/manageProducts",
-  adminGuard.isAdmin,
-  adminController.getManageProducts
-);
-router.post(
-  "/deleteProduct",
-  adminGuard.isAdmin,
-  adminController.deleteProduct
-);
-router.post(
-  "/deleteAllProducts",
-  adminGuard.isAdmin,
-  adminController.deleteAllProducts
-);
+
+router.get("/manageOrders", isAdmin, adminController.getManageOrders);
+
+router.post("/statusEditing", isAdmin, adminController.statusEditing);
+
+router.get("/manageProducts", isAdmin, adminController.getManageProducts);
+
+router.post("/deleteProduct", isAdmin, adminController.deleteProduct);
+
+router.post("/deleteAllProducts", isAdmin, adminController.deleteAllProducts);
+
 router.post(
   "/updateProduct",
-  adminGuard.isAdmin,
+  isAdmin,
   upload.single("file"),
   adminController.updateProduct
 );
+
 module.exports = router;

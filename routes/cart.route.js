@@ -1,12 +1,13 @@
 const router = require("express").Router();
 const cartController = require("../controllers/cart.controller");
 const check = require("express-validator").check;
-const authGuard = require("../routes/guards/auth.guard");
+const { isUser } = require("../routes/guards/auth.guard");
 
-router.get("/", authGuard.isUser, cartController.getCart);
+router.get("/", isUser, cartController.getCart);
+
 router.post(
   "/",
-  authGuard.isUser,
+  isUser,
   check("amount")
     .not()
     .isEmpty()
@@ -15,9 +16,10 @@ router.post(
     .withMessage("Cart amount must be between 0 and 1000"),
   cartController.postCart
 );
+
 router.post(
   "/save",
-  authGuard.isUser,
+  isUser,
   check("amount")
     .not()
     .isEmpty()
@@ -26,34 +28,34 @@ router.post(
     .withMessage("Cart amount must be between 0 and 1000"),
   cartController.updateProduct
 );
-router.post("/delete", authGuard.isUser, cartController.deleteCart);
-router.post("/deleteAll", authGuard.isUser, cartController.deleteAllCart);
+
+router.post("/delete", isUser, cartController.deleteCart);
+
+router.post("/deleteAll", isUser, cartController.deleteAllCart);
+
 router.post(
   "/deleteOrder",
-  authGuard.isUser,
+  isUser,
 
   cartController.deleteOrder
 );
-router.post(
-  "/deleteAllOrders",
-  authGuard.isUser,
 
-  cartController.deleteAllOrders
-);
+router.post("/deleteAllOrders", isUser, cartController.deleteAllOrders);
+
 router.post(
   "/deleteAllUserOrders",
-  authGuard.isUser,
+  isUser,
 
   cartController.deleteAllUserOrders
 );
 
-router.get("/verifyOrders", authGuard.isUser, cartController.getverifyOrders);
-router.post("/verifyOrders", authGuard.isUser, cartController.postverifyOrders);
+router.get("/verifyOrders", isUser, cartController.getverifyOrders);
+router.post("/verifyOrders", isUser, cartController.postverifyOrders);
 
-router.get("/orders", authGuard.isUser, cartController.getOrders);
+router.get("/orders", isUser, cartController.getOrders);
 router.post(
   "/orders",
-  authGuard.isUser,
+  isUser,
   check("address")
     .not()
     .isEmpty()
@@ -71,8 +73,8 @@ router.post(
   cartController.postOrders
 );
 
-router.get("/payment", authGuard.isUser, cartController.getPayment);
-router.post("/payment/pay", authGuard.isUser, cartController.paypal);
+router.get("/payment", isUser, cartController.getPayment);
+router.post("/payment/pay", isUser, cartController.paypal);
 router.get("/payment/pay/success", cartController.paypalSuccess);
 router.get("/payment/pay/cancel", cartController.paypalCancel);
 

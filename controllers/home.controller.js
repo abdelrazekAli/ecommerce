@@ -5,7 +5,7 @@ exports.getHome = (req, res, next) => {
   let { userId, isAdmin, active, completeActive, emailSent } = req.session;
   let validCategories = ["clothes", "computers", "cups", "watches"];
 
-  // Check category to filter products
+  // Check if category to filter products
   if (category && validCategories.includes(category)) {
     productsModel.getByCategory(category).then((products) => {
       res.render("index", {

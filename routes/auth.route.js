@@ -1,12 +1,13 @@
 const router = require("express").Router();
 const check = require("express-validator").check;
 const authController = require("../controllers/auth.controller");
-const authGuard = require("../routes/guards/auth.guard");
+const { isNotUser } = require("../routes/guards/auth.guard");
 
-router.get("/signup", authGuard.isNotUser, authController.getSignup);
+router.get("/signup", isNotUser, authController.getSignup);
+
 router.post(
   "/signup",
-  authGuard.isNotUser,
+  isNotUser,
   check("username").not().isEmpty().withMessage("Username is required"),
   check("email")
     .not()
@@ -23,10 +24,12 @@ router.post(
   }),
   authController.postSignup
 );
-router.get("/login", authGuard.isNotUser, authController.getLogin);
+
+router.get("/login", isNotUser, authController.getLogin);
+
 router.post(
   "/login",
-  authGuard.isNotUser,
+  isNotUser,
   check("email")
     .not()
     .isEmpty()
@@ -43,7 +46,9 @@ router.post(
 );
 
 router.all("/VerifyEmail/:code", authController.verifyEmail);
+
 router.post("/SendVerifyEmail", authController.sendVerifyEmail);
 
 router.all("/logout", authController.logout);
+
 module.exports = router;

@@ -134,15 +134,9 @@ exports.getManageProducts = (req, res, next) => {
 };
 
 exports.deleteProduct = (req, res, next) => {
-  let { id, image } = req.body;
+  let { productId } = req.body;
   productModel
-    .deleteProduct(id)
-    .then(() => {
-      // Delete product image
-      fs.unlink(`images/${image}`, () => {
-        console.log("Deleted.");
-      });
-    })
+    .deleteProduct(productId)
     .then(() => {
       res.redirect("/admin/manageProducts");
     })
@@ -156,24 +150,9 @@ exports.deleteAllProducts = (req, res, next) => {
   productModel
     .deleteAllProducts()
     .then(() => {
-      // Delete all products images
-      fs.readdir("images", (err, files) => {
-        if (err) {
-          console.log(err);
-          next(err);
-        }
-        for (let file of files) {
-          fs.unlink(`images/${file}`, () => {
-            console.log("Deleted.");
-          });
-        }
-      });
-    })
-    .then(() => {
       res.redirect("/admin/manageProducts");
     })
     .catch((err) => {
-      console.log(err);
       console.log(err);
       next(err);
     });

@@ -9,6 +9,7 @@ exports.isNotUser = (req, res, next) => {
     next();
   } else res.redirect("/");
 };
+
 exports.isAdmin = (req, res, next) => {
   if (req.session.isAdmin) {
     next();
