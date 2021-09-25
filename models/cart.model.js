@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { DB_URL } = process.env;
 const connectOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 
 const itemSchema = mongoose.Schema({
@@ -24,7 +25,7 @@ const orderItem = mongoose.model("order", itemSchema);
 exports.addNewItem = (data) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DB_URL, connectOptions)
+      .connect(DB_URL, connectOptions)
       .then(() => {
         return cartItem.findOne({
           productId: data.productId,
@@ -43,9 +44,11 @@ exports.addNewItem = (data) => {
         }
       })
       .then(() => {
+        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
+        mongoose.disconnect();
         reject(err);
       });
   });
@@ -54,28 +57,34 @@ exports.addNewItem = (data) => {
 exports.getCart = (id) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DB_URL, connectOptions)
+      .connect(DB_URL, connectOptions)
       .then(() => {
         return cartItem.find({ userId: id }, {}, { sort: { timestamp: 1 } });
       })
       .then((data) => {
+        mongoose.disconnect();
         resolve(data);
       })
-      .catch((err) => reject(err));
+      .catch((err) => {
+        mongoose.disconnect();
+        reject(err);
+      });
   });
 };
 
 exports.editProduct = (id, data) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DB_URL, connectOptions)
+      .connect(DB_URL, connectOptions)
       .then(() => {
         return cartItem.updateOne({ _id: id }, data);
       })
       .then(() => {
+        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
+        mongoose.disconnect();
         reject(err);
       });
   });
@@ -84,14 +93,16 @@ exports.editProduct = (id, data) => {
 exports.deleteProduct = (id) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DB_URL, connectOptions)
+      .connect(DB_URL, connectOptions)
       .then(() => {
         return cartItem.deleteOne({ _id: id });
       })
       .then(() => {
+        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
+        mongoose.disconnect();
         reject(err);
       });
   });
@@ -100,23 +111,26 @@ exports.deleteProduct = (id) => {
 exports.deleteAllCart = () => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DB_URL, connectOptions)
+      .connect(DB_URL, connectOptions)
       .then(() => {
         return cartItem.deleteMany({});
       })
       .then(() => {
+        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
+        mongoose.disconnect();
         reject(err);
       });
   });
 };
 
 exports.addToOrders = (id, updatedData) => {
+  console.log(updatedData);
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DB_URL, connectOptions)
+      .connect(DB_URL, connectOptions)
       .then(() => {
         return cartItem.updateMany({ userId: id }, updatedData);
       })
@@ -130,12 +144,14 @@ exports.addToOrders = (id, updatedData) => {
         return orderItem.collection.insertMany(data);
       })
       .then(() => {
-        return cartItem.deleteMany({});
+        return cartItem.deleteMany({ userId: id });
       })
       .then(() => {
+        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
+        mongoose.disconnect();
         reject(err);
       });
   });
@@ -144,14 +160,16 @@ exports.addToOrders = (id, updatedData) => {
 exports.printOrders = (id) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DB_URL, connectOptions)
+      .connect(DB_URL, connectOptions)
       .then(() => {
         return orderItem.find({ userId: id });
       })
       .then((data) => {
+        mongoose.disconnect();
         resolve(data);
       })
       .catch((err) => {
+        mongoose.disconnect();
         reject(err);
       });
   });
@@ -160,14 +178,16 @@ exports.printOrders = (id) => {
 exports.deleteOrder = (id) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DB_URL, connectOptions)
+      .connect(DB_URL, connectOptions)
       .then(() => {
         return orderItem.deleteOne({ _id: id });
       })
       .then(() => {
+        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
+        mongoose.disconnect();
         reject(err);
       });
   });
@@ -176,14 +196,16 @@ exports.deleteOrder = (id) => {
 exports.deleteAllUserOrders = (userId) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DB_URL, connectOptions)
+      .connect(DB_URL, connectOptions)
       .then(() => {
         return orderItem.deleteMany({ userId: userId });
       })
       .then(() => {
+        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
+        mongoose.disconnect();
         reject(err);
       });
   });
@@ -192,14 +214,16 @@ exports.deleteAllUserOrders = (userId) => {
 exports.deleteAllOrders = () => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DB_URL, connectOptions)
+      .connect(DB_URL, connectOptions)
       .then(() => {
         return orderItem.deleteMany({});
       })
       .then(() => {
+        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
+        mongoose.disconnect();
         reject(err);
       });
   });
@@ -208,14 +232,16 @@ exports.deleteAllOrders = () => {
 exports.getAllOrders = () => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DB_URL, connectOptions)
+      .connect(DB_URL, connectOptions)
       .then(() => {
         return orderItem.find({});
       })
       .then((data) => {
+        mongoose.disconnect();
         resolve(data);
       })
       .catch((err) => {
+        mongoose.disconnect();
         reject(err);
       });
   });
@@ -224,14 +250,16 @@ exports.getAllOrders = () => {
 exports.statusEditing = (id, nStatus) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DB_URL, connectOptions)
+      .connect(DB_URL, connectOptions)
       .then(() => {
         return orderItem.updateOne({ _id: id }, { status: nStatus });
       })
       .then(() => {
+        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
+        mongoose.disconnect();
         reject(err);
       });
   });
@@ -240,14 +268,16 @@ exports.statusEditing = (id, nStatus) => {
 exports.filterByEmail = (id) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DB_URL, connectOptions)
+      .connect(DB_URL, connectOptions)
       .then(() => {
         return orderItem.find({ userId: id });
       })
       .then((data) => {
+        mongoose.disconnect();
         resolve(data);
       })
       .catch((err) => {
+        mongoose.disconnect();
         reject(err);
       });
   });
@@ -256,7 +286,7 @@ exports.filterByEmail = (id) => {
 exports.updatePayment = (id) => {
   return new Promise((resolve, reject) => {
     mongoose
-      .connect(process.env.DB_URL, connectOptions)
+      .connect(DB_URL, connectOptions)
       .then(() => {
         return orderItem.updateMany(
           { userId: id, payment: false },
@@ -264,9 +294,11 @@ exports.updatePayment = (id) => {
         );
       })
       .then(() => {
+        mongoose.disconnect();
         resolve();
       })
       .catch((err) => {
+        mongoose.disconnect();
         reject(err);
       });
   });

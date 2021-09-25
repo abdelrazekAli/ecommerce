@@ -1,5 +1,5 @@
 const fs = require("fs");
-const validationResult = require("express-validator").validationResult;
+const { validationResult } = require("express-validator");
 
 // Import models
 const cartModel = require("../models/cart.model");
@@ -49,7 +49,7 @@ exports.postaddProduct = (req, res, next) => {
 };
 
 exports.getManageOrders = (req, res, next) => {
-  const email = req.query.email;
+  const { email } = req.query;
   const statusOptions = ["Pending", "Sent", "Completed"];
 
   if (email) {
@@ -149,7 +149,12 @@ exports.updateProduct = async (req, res, next) => {
         image: imageName,
       })
       .then(() => {
-        res.redirect("/admin/manageProducts");
+        let oldImg = `images/${req.body.image}`;
+        if (fs.existsSync(oldImg)) {
+          fs.unlink(oldImg, () => {
+            res.redirect("/admin/manageProducts");
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -171,8 +176,14 @@ exports.updateProduct = async (req, res, next) => {
 
 exports.deleteProduct = (req, res, next) => {
   let { productId } = req.body;
+  let image = req.body.image[1];
   productModel
     .deleteProduct(productId)
+    .then(() => {
+      fs.unlink(`images/${image}`, () => {
+        console.log("Deleted.");
+      });
+    })
     .then(() => {
       res.redirect("/admin/manageProducts");
     })
@@ -185,6 +196,16 @@ exports.deleteProduct = (req, res, next) => {
 exports.deleteAllProducts = (req, res, next) => {
   productModel
     .deleteAllProducts()
+    .then(() => {
+      fs.readdir("images", (err, files) => {
+        if (err) next(err);
+        for (let file of files) {
+          fs.unlink(`images/${file}`, () => {
+            console.log("Deleted.");
+          });
+        }
+      });
+    })
     .then(() => {
       res.redirect("/admin/manageProducts");
     })

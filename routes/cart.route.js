@@ -33,21 +33,11 @@ router.post("/delete", isUser, cartController.deleteCart);
 
 router.post("/deleteAll", isUser, cartController.deleteAllCart);
 
-router.post(
-  "/deleteOrder",
-  isUser,
-
-  cartController.deleteOrder
-);
+router.post("/deleteOrder", isUser, cartController.deleteOrder);
 
 router.post("/deleteAllOrders", isUser, cartController.deleteAllOrders);
 
-router.post(
-  "/deleteAllUserOrders",
-  isUser,
-
-  cartController.deleteAllUserOrders
-);
+router.post("/deleteAllUserOrders", isUser, cartController.deleteAllUserOrders);
 
 router.get("/verifyOrders", isUser, cartController.getverifyOrders);
 router.post("/verifyOrders", isUser, cartController.postverifyOrders);
@@ -73,6 +63,7 @@ router.post(
   cartController.postOrders
 );
 
+// Payment routes
 router.get("/payment", isUser, cartController.getPayment);
 router.post("/payment/pay", isUser, cartController.paypal);
 router.get("/payment/pay/success", cartController.paypalSuccess);

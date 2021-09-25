@@ -1,7 +1,7 @@
 const productsModel = require("../models/product.model");
 
 exports.getHome = (req, res, next) => {
-  let category = req.query.category;
+  let { category } = req.query;
   let { userId, isAdmin, active, completeActive, emailSent } = req.session;
   let validCategories = ["clothes", "computers", "cups", "watches"];
 

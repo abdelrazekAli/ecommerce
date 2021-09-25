@@ -1,7 +1,7 @@
 const paypal = require("paypal-rest-sdk");
 const logger = require("../config/logger");
 const cartModel = require("../models/cart.model");
-const validationResult = require("express-validator").validationResult;
+const { validationResult } = require("express-validator");
 
 exports.getCart = (req, res, next) => {
   cartModel.getCart(req.session.userId).then((productsData) => {
@@ -117,6 +117,7 @@ exports.getOrders = (req, res, next) => {
 
 exports.postOrders = (req, res, next) => {
   let { address, phone } = req.body;
+
   if (validationResult(req).isEmpty()) {
     cartModel
       .addToOrders(req.session.userId, {
