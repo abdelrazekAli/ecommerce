@@ -108,12 +108,12 @@ exports.deleteProduct = (id) => {
   });
 };
 
-exports.deleteAllCart = () => {
+exports.deleteAllCart = (userId) => {
   return new Promise((resolve, reject) => {
     mongoose
       .connect(DB_URL, connectOptions)
       .then(() => {
-        return cartItem.deleteMany({});
+        return cartItem.deleteMany({ userId: userId });
       })
       .then(() => {
         mongoose.disconnect();
@@ -127,7 +127,6 @@ exports.deleteAllCart = () => {
 };
 
 exports.addToOrders = (id, updatedData) => {
-  console.log(updatedData);
   return new Promise((resolve, reject) => {
     mongoose
       .connect(DB_URL, connectOptions)

@@ -55,7 +55,7 @@ exports.deleteCart = (req, res, next) => {
 
 exports.deleteAllCart = (req, res, next) => {
   cartModel
-    .deleteAllCart()
+    .deleteAllCart(req.session.userId)
     .then(() => {
       res.redirect("/cart");
     })
